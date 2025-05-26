@@ -11,11 +11,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.teebay.ui.theme.TeebayTheme
+import androidx.lifecycle.lifecycleScope
+import com.example.teebay.core.data.repository.UserRepository
+import com.example.teebay.core.domain.UserUseCase
+import com.example.teebay.presentation.theme.TeebayTheme
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var userUseCase: UserUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
+        lifecycleScope.launch {
+            userUseCase.loginUser("sarwar@example.com", "pass")
+        }
         enableEdgeToEdge()
         setContent {
             TeebayTheme {

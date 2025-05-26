@@ -1,0 +1,20 @@
+package com.example.teebay.framework.database.user
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+
+@Dao
+interface UserDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUser(userEntity: UserEntity)
+
+    @Delete
+    suspend fun deleteUser(userEntity: UserEntity)
+
+    @Query("SELECT * FROM users LIMIT 1")
+    suspend fun getUser(): UserEntity?
+}

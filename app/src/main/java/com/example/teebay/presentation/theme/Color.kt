@@ -1,4 +1,4 @@
-package com.example.teebay.ui.theme
+package com.example.teebay.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

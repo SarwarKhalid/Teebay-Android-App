@@ -1,0 +1,36 @@
+package com.example.teebay.framework.database.datasourceimpl
+
+import android.util.Log
+import com.example.teebay.core.data.datasource.IUserDataSourceLocal
+import com.example.teebay.core.model.User
+import com.example.teebay.framework.database.user.UserDao
+import com.example.teebay.framework.database.user.UserEntity
+import javax.inject.Inject
+
+class RoomUserDataSource @Inject constructor(private val userDao: UserDao): IUserDataSourceLocal {
+
+    private val TAG = "RoomUserDataSource"
+
+    override suspend fun saveUser(user: User) {
+        Log.i(TAG,"saveUser")
+        runCatching {
+            user.run {
+                UserEntity(
+                    id = id,
+                    email = email,
+                    firstName = firstName,
+                    lastName = lastName,
+                    address = address,
+                    firebaseConsoleManagerToken = firebaseConsoleManagerToken,
+                    password = password,
+                    dateJoined = dateJoined
+                ).also {
+                    userDao.saveUser(it)
+                    Log.i(TAG,"User saved")
+                }
+            }
+        }.onFailure { error: Throwable ->
+            Log.i(TAG,error.toString())
+        }
+    }
+}
