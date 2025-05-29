@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
     //Room
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
@@ -69,6 +71,10 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
     ksp(libs.hilt.compiler)
 
+    //Jetpack navigation
+    implementation(libs.jetpack.navigation)
+    implementation(libs.json.serialization)
 }
