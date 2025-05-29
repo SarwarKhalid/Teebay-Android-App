@@ -16,12 +16,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object HiltNetworkModule {
 
-    private val BASE_URL = "http://192.168.50.146"
+    private val BASE_URL = "http://127.0.0.1:8000"
 
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("$BASE_URL:8000/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
