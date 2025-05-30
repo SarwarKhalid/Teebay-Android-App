@@ -3,15 +3,15 @@ package com.example.teebay.framework.network.response
 import com.google.gson.annotations.SerializedName
 import com.example.teebay.core.model.User
 
-data class LoginResponse(
+data class LoginUserResponse(
     @SerializedName("message")
     val message: String,
 
     @SerializedName("user")
-    val user: LoginResponseUser
+    val user: LoginResponseUserData
 )
 
-data class LoginResponseUser(
+data class LoginResponseUserData(
     @SerializedName("id")
     val id: Int,
 
@@ -37,7 +37,7 @@ data class LoginResponseUser(
     val dateJoined: String
 )
 
-fun LoginResponse.toUser(): User {
+fun LoginUserResponse.toUser(): User {
     return user.run {
         User(
             id = id,

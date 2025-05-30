@@ -23,17 +23,9 @@ class LoginViewModel @Inject constructor(private val userUseCase: UserUseCase) :
     fun onEvent(event: LoginEvent) {
         Log.i(TAG,"onEvent")
         when (event) {
-            is LoginEvent.EmailChanged -> {
-                _uiState.update { it.copy(email = event.email) }
-            }
-
-            is LoginEvent.PasswordChanged -> {
-                _uiState.update { it.copy(password = event.password) }
-            }
-
-            is LoginEvent.Submit -> {
-                login()
-            }
+            is LoginEvent.EmailChanged -> _uiState.update { it.copy(email = event.email) }
+            is LoginEvent.PasswordChanged -> _uiState.update { it.copy(password = event.password) }
+            is LoginEvent.Submit -> login()
         }
     }
 

@@ -33,4 +33,13 @@ class RoomUserDataSource @Inject constructor(private val userDao: UserDao): IUse
             Log.i(TAG,error.toString())
         }
     }
+
+    override suspend fun clearUsers() {
+        Log.i(TAG,"clearUsers")
+        runCatching {
+            userDao.clearUsers()
+        }.onFailure { error: Throwable ->
+            Log.i(TAG,error.toString())
+        }
+    }
 }

@@ -10,6 +10,29 @@ class UserRepository @Inject constructor(
     private val localDataSource: IUserDataSourceLocal
 ) {
 
+    suspend fun registerUser(
+        email: String,
+        firstName: String,
+        lastName: String,
+        address: String,
+        firebaseConsoleManagerToken: String,
+        password: String
+    ) = remoteDatasource.registerUser(
+        email,
+        firstName,
+        lastName,
+        address,
+        firebaseConsoleManagerToken,
+        password
+    )
+
     suspend fun getUser(email: String, password: String) = remoteDatasource.getUser(email, password)
-    suspend fun saveUser(user: User) = localDataSource.saveUser(user)
+
+    // Clear Users table before an insert as it should only contain 1 row(the logged in user)
+    suspend fun saveUser(user: User) {
+        clearUsers()
+        localDataSource.saveUser(user)
+    }
+
+    private suspend fun clearUsers() = localDataSource.clearUsers()
 }

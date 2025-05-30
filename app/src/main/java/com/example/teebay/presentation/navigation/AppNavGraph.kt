@@ -8,8 +8,11 @@ import androidx.navigation.compose.rememberNavController
 fun SetupNavigation() {
     val navController = rememberNavController()
     //TODO: Change start destination to Home
-    NavHost(navController, startDestination = LoginRoute) {
+    NavHost(navController, startDestination = SignupRoute) {
         loginDestination {
+            navController.navigatePopUpToHome()
+        }
+        signupDestination {
             navController.navigatePopUpToHome()
         }
         homeDestination()

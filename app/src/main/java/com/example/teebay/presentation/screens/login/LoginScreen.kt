@@ -70,18 +70,15 @@ fun LoginScreen(
         }
 
         uiState.loginResult?.let { result ->
-            Spacer(modifier = Modifier.height(16.dp))
+            LaunchedEffect(key1 = result) {
+                Log.i(TAG,"Login: $result")
+            }
             when(result) {
                 is Result.Success -> {
-                    LaunchedEffect(key1 = result) {
-                        Log.i(TAG,"Login success")
-                    }
                     onNavigateToHome()
                 }
                 is Result.Failure -> {
-                    LaunchedEffect(key1 = result) {
-                        Log.i(TAG,"Login failed")
-                    }
+                    Spacer(modifier = Modifier.height(16.dp))
                     Text(LOGIN_FAIL_MESSAGE)
                 }
             }
