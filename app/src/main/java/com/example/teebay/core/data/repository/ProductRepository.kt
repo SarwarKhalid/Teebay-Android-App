@@ -1,5 +1,7 @@
 package com.example.teebay.core.data.repository
 
+import android.content.Context
+import android.net.Uri
 import com.example.teebay.core.data.datasource.IProductsDataSourceRemote
 import com.example.teebay.core.model.Product
 import com.example.teebay.core.model.Result
@@ -22,5 +24,9 @@ class ProductRepository @Inject constructor(private val remoteDataSourceRemote: 
 
     suspend fun deleteProduct(productId: Int) {
         remoteDataSourceRemote.deleteProduct(productId)
+    }
+
+    suspend fun uploadProduct(context: Context, product: Product, productImageUri: Uri): Result<Product> {
+        return remoteDataSourceRemote.uploadProduct(context,product,productImageUri)
     }
 }

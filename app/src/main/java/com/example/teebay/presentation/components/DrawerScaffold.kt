@@ -31,6 +31,8 @@ fun DrawerScaffold(
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     onMyProductsClick: () -> Unit,
     onLogout: () -> Unit,
+    floatingActionButton: @Composable () -> Unit = {},
+    title: String = "",
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -74,7 +76,7 @@ fun DrawerScaffold(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Home") },
+                    title = { Text(title) },
                     navigationIcon = {
                         IconButton(onClick = {
                             scope.launch { drawerState.open() }
@@ -84,6 +86,7 @@ fun DrawerScaffold(
                     }
                 )
             },
+            floatingActionButton = floatingActionButton,
             content = content
         )
     }

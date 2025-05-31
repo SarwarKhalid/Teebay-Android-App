@@ -11,10 +11,19 @@ fun SetupNavigation() {
     NavHost(navController, startDestination = HomeRoute) {
         loginDestination(
             onNavigateToHome = { navController.navigatePopUpToHome() },
-            onNavigateToSignup = { navController.navigateToSignup() })
+            onNavigateToSignup = { navController.navigateToSignup() }
+
+        )
         signupDestination {
             navController.navigatePopUpToHome()
         }
-        homeDestination({navController.navigateToLogin()}, {navController.navigatePopUpToHome()})
+
+        homeDestination(
+            onNavigateToLogin = { navController.navigateToLogin() },
+            onNavigateToMyProducts = { navController.navigatePopUpToHome() },
+            onNavigateToAddProduct = { navController.navigateToAddProduct() }
+        )
+
+        addProductDestination { navController.navigatePopUpToHome() }
     }
 }

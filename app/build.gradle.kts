@@ -77,4 +77,8 @@ dependencies {
     //Jetpack navigation
     implementation(libs.jetpack.navigation)
     implementation(libs.json.serialization)
+
+    //Coil for image loading
+    implementation(libs.coil.compose)
+    implementation(libs.coil.okhttp)
 }

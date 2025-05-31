@@ -15,6 +15,7 @@ hilt-navigation = "1.2.0"
 ksp = "2.0.21-1.0.28"
 nav_version = "2.9.0"
 jsonSerialization = "1.7.3"
+coil = "3.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,8 @@ hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.re
 hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation" }
 jetpack-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "nav_version" }
 json-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "jsonSerialization" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
