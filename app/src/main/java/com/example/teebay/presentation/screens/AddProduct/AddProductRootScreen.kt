@@ -36,7 +36,7 @@ fun AddProductRootScreen(
     onNavigateToHome: () -> Unit
 ) {
     var step by remember { mutableStateOf(AddProductStep.TITLE) }
-    val allCategories = listOf("Electronics", "Furniture", "Home Appliances", "Toys", "Sporting Goods", "Outdoor") //Placeholder for categories
+    val allCategories = listOf("electronics", "furniture", "home_appliances", "toys", "sporting_goods", "outdoor") //Placeholder for categories
     val context = LocalContext.current
     val imageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
