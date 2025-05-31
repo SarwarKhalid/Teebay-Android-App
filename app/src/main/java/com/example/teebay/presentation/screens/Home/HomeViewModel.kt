@@ -1,5 +1,6 @@
 package com.example.teebay.presentation.screens.Home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teebay.core.domain.UserUseCase
@@ -34,4 +35,17 @@ class HomeViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
         }
     }
 
+    fun onEvent(event: HomeEvent) {
+        Log.i(TAG,"onEvent")
+        when(event) {
+            HomeEvent.OnLogout -> logout()
+        }
+    }
+
+    private fun logout() {
+        Log.i(TAG,"logout")
+        viewModelScope.launch {
+            userUseCase.logoutUser()
+        }
+    }
 }

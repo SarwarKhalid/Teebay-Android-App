@@ -35,12 +35,17 @@ class UserUseCase @Inject constructor(private val userRepository: UserRepository
     }
 
     suspend fun loginUser(email: String, password: String): Result<User> {
-        Log.i(TAG,"loginUser")
+
         val loginResponse = userRepository.getUserRemote(email, password)
         if (loginResponse is Result.Success) {
             userRepository.saveUser(loginResponse.data)
         }
         return loginResponse
+    }
+
+    suspend fun logoutUser() {
+        Log.i(TAG,"logOutUser")
+        userRepository.clearUsers()
     }
 
     fun getLoggedInUser(): Flow<User?> {

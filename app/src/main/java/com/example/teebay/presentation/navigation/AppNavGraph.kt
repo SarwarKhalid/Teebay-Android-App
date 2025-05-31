@@ -15,8 +15,6 @@ fun SetupNavigation() {
         signupDestination {
             navController.navigatePopUpToHome()
         }
-        homeDestination {
-            navController.navigateToLogin()
-        }
+        homeDestination({navController.navigateToLogin()}, {navController.navigatePopUpToHome()})
     }
 }

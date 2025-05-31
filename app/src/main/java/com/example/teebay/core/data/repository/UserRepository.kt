@@ -36,5 +36,5 @@ class UserRepository @Inject constructor(
         localDataSource.saveUser(user)
     }
 
-    private suspend fun clearUsers() = localDataSource.clearUsers()
+    suspend fun clearUsers() = localDataSource.clearUsers()
 }
