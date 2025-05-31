@@ -2,6 +2,7 @@ package com.example.teebay.framework.database.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.teebay.core.model.User
 
 @Entity(tableName = "users")
 data class UserEntity(
@@ -14,3 +15,16 @@ data class UserEntity(
     val password: String,
     val dateJoined: String
 )
+
+fun UserEntity.toUser(): User {
+    return User(
+        id = id,
+        email = email,
+        firstName = firstName,
+        lastName = lastName,
+        address = address,
+        firebaseConsoleManagerToken = firebaseConsoleManagerToken,
+        password = password,
+        dateJoined = dateJoined
+    )
+}

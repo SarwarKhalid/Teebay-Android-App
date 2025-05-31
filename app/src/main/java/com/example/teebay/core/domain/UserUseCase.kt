@@ -1,10 +1,13 @@
 package com.example.teebay.core.domain
 
+import android.util.Log
 import com.example.teebay.core.data.repository.UserRepository
 import com.example.teebay.core.model.Result
 import com.example.teebay.core.model.User
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import kotlin.math.log
+
+private val TAG = "UserUseCase"
 
 class UserUseCase @Inject constructor(private val userRepository: UserRepository) {
 
@@ -16,6 +19,7 @@ class UserUseCase @Inject constructor(private val userRepository: UserRepository
         firebaseConsoleManagerToken: String,
         password: String
     ): Result<User> {
+        Log.i(TAG,"registerUser")
         val registerUserResponse = userRepository.registerUser(
             email,
             firstName,
@@ -31,10 +35,16 @@ class UserUseCase @Inject constructor(private val userRepository: UserRepository
     }
 
     suspend fun loginUser(email: String, password: String): Result<User> {
-        val loginResponse = userRepository.getUser(email, password)
+        Log.i(TAG,"loginUser")
+        val loginResponse = userRepository.getUserRemote(email, password)
         if (loginResponse is Result.Success) {
             userRepository.saveUser(loginResponse.data)
         }
         return loginResponse
+    }
+
+    fun getLoggedInUser(): Flow<User?> {
+        Log.i(TAG,"getLoggedInUser")
+        return userRepository.getUserLocal()
     }
 }

@@ -12,10 +12,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,8 @@ private val LOGIN_FAIL_MESSAGE = "Login failed, please try again."
 fun LoginScreen(
     uiState: LoginUiState,
     onEvent: (LoginEvent) -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToSignup: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -61,12 +64,21 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Login button
         Button(
             onClick = { onEvent(LoginEvent.Submit) },
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.email.isNotBlank() && uiState.password.isNotBlank()
         ) {
             Text("Login")
+        }
+
+        //Signup button
+        TextButton(
+            onClick = onNavigateToSignup,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text("Don't have an account? Sign up")
         }
 
         uiState.loginResult?.let { result ->

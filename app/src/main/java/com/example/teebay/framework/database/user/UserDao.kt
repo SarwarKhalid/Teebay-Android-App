@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -16,7 +17,7 @@ interface UserDao {
     suspend fun deleteUser(userEntity: UserEntity)
 
     @Query("SELECT * FROM users LIMIT 1")
-    suspend fun getUser(): UserEntity?
+    fun getUser(): Flow<UserEntity?>
 
     @Query("DELETE FROM users")
     suspend fun clearUsers()

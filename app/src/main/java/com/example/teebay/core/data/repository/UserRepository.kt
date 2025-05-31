@@ -26,7 +26,9 @@ class UserRepository @Inject constructor(
         password
     )
 
-    suspend fun getUser(email: String, password: String) = remoteDatasource.getUser(email, password)
+    suspend fun getUserRemote(email: String, password: String) = remoteDatasource.getUser(email, password)
+
+    fun getUserLocal() = localDataSource.getUser()
 
     // Clear Users table before an insert as it should only contain 1 row(the logged in user)
     suspend fun saveUser(user: User) {

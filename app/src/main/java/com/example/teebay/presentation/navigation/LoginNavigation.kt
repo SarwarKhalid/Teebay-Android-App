@@ -14,11 +14,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 object LoginRoute
 
-fun NavGraphBuilder.loginDestination(onNavigateToHome: () -> Unit) {
+fun NavGraphBuilder.loginDestination(onNavigateToHome: () -> Unit, onNavigateToSignup: () -> Unit) {
     composable<LoginRoute> {
         val viewModel: LoginViewModel = hiltViewModel()
         val loginUiState by viewModel.uiState.collectAsStateWithLifecycle()
-        LoginScreen(loginUiState,viewModel::onEvent, onNavigateToHome)
+        LoginScreen(loginUiState, viewModel::onEvent, onNavigateToHome, onNavigateToSignup)
     }
 }
 
