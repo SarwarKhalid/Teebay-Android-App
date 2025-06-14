@@ -1,7 +1,9 @@
 package com.example.teebay.presentation.screens.AddProduct
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.teebay.core.domain.ProductUseCase
@@ -20,8 +22,10 @@ private val TAG = "AddProductViewModel"
 @HiltViewModel
 class AddProductViewModel @Inject constructor(
     private val productUseCase: ProductUseCase,
-    private val userUseCase: UserUseCase
+    private val userUseCase: UserUseCase,
+    @ApplicationContext private val applicationContext: Context
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(AddProductUiState())
     val uiState: StateFlow<AddProductUiState> = _uiState
 
@@ -41,7 +45,7 @@ class AddProductViewModel @Inject constructor(
             is AddProductEvent.PurchasePriceChanged -> _uiState.update { it.copy(purchasePrice = event.value) }
             is AddProductEvent.RentPriceChanged -> _uiState.update { it.copy(rentPrice = event.value) }
             is AddProductEvent.RentOptionChanged -> _uiState.update { it.copy(rentOption = event.value) }
-            is AddProductEvent.Submit -> { uploadProduct(event.context) }
+            is AddProductEvent.Submit -> { uploadProduct(applicationContext) }
         }
     }
 
@@ -57,6 +61,7 @@ class AddProductViewModel @Inject constructor(
                 }
             }
         }
-
     }
+
+
 }

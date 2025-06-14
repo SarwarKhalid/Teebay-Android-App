@@ -1,5 +1,6 @@
 package com.example.teebay.presentation.screens.Home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +45,8 @@ fun HomeScreen(
     onEvent: (HomeEvent) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateToMyProducts: () -> Unit,
-    onNavigateToAddProduct: () -> Unit
+    onNavigateToAddProduct: () -> Unit,
+    onNavigateToEditProduct: (Product) -> Unit
 ) {
     if (uiState.isLoggedIn == true) {
         DrawerScaffold(
@@ -78,7 +80,8 @@ fun HomeScreen(
                         items(uiState.productsList.data) { product ->
                             ProductCard(
                                 product = product,
-                                onDeleteClick = { productToDelete = product }
+                                onDeleteClick = { productToDelete = product },
+                                onNavigateToEditProduct = onNavigateToEditProduct
                             )
                             Spacer(Modifier.height(16.dp))
                         }
@@ -118,12 +121,15 @@ fun HomeScreen(
 @Composable
 private fun ProductCard(
     product: Product,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    onNavigateToEditProduct: (Product) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onNavigateToEditProduct(product) }
     ) {
         Column(Modifier.padding(16.dp)) {
             Row(
@@ -148,7 +154,7 @@ private fun ProductCard(
 
             Text("Categories: ${product.categories.joinToString()}")
             Text("Purchase Price: ${product.purchasePrice}")
-            Text("Rent Price: ${product.rentPrice}")
+            Text("Rent Price: ${product.rentPrice}/${product.rentOption}")
             Text("Description: ${product.description}")
             Text("Posted on: ${product.datePosted}")
         }

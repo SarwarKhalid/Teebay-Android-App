@@ -12,6 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -43,6 +44,18 @@ interface ApiService {
         @Part("description") description: RequestBody,
         @Part("categories") categories: ArrayList<RequestBody>,
         @Part product_image: MultipartBody.Part,
+        @Part("purchase_price") purchasePrice: RequestBody,
+        @Part("rent_price") rentPrice: RequestBody,
+        @Part("rent_option") rentOption: RequestBody
+    ): Response<ProductResponse>
+
+    @Multipart
+    @PATCH("api/products/{id}/")
+    suspend fun editProduct(
+        @Path("id") productId: Int,
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("categories") categories: ArrayList<RequestBody>,
         @Part("purchase_price") purchasePrice: RequestBody,
         @Part("rent_price") rentPrice: RequestBody,
         @Part("rent_option") rentOption: RequestBody

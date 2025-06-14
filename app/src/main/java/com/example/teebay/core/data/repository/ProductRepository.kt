@@ -29,4 +29,8 @@ class ProductRepository @Inject constructor(private val remoteDataSourceRemote: 
     suspend fun uploadProduct(context: Context, product: Product, productImageUri: Uri): Result<Product> {
         return remoteDataSourceRemote.uploadProduct(context,product,productImageUri)
     }
+
+    suspend fun editProduct(product: Product): Result<Product> {
+        return remoteDataSourceRemote.editProduct(product)
+    }
 }

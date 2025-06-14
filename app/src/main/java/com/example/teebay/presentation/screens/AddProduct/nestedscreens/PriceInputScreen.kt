@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.teebay.presentation.components.RentOptionSelector
 
 @Composable
 fun PriceInputScreen(
@@ -45,20 +46,9 @@ fun PriceInputScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
-        Row {
-            listOf("day", "hour").forEach {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end = 16.dp)
-                ) {
-                    RadioButton(
-                        selected = rentOption == it,
-                        onClick = { onRentOptionChange(it) }
-                    )
-                    Text(it)
-                }
-            }
-        }
+
+        RentOptionSelector(rentOption,onRentOptionChange)
+
         Spacer(Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween) {
             OutlinedButton(

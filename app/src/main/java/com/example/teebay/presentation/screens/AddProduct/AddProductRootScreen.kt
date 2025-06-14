@@ -51,7 +51,9 @@ fun AddProductRootScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(50.dp))
+        Text("Add a product")
+        Spacer(modifier = Modifier.height(10.dp))
         LinearProgressIndicator(
             progress = {
                 val totalSteps = AddProductStep.entries.size
@@ -112,7 +114,7 @@ fun AddProductRootScreen(
                 rentPrice = uiState.rentPrice,
                 rentOption = uiState.rentOption,
                 onSubmit = {
-                    onEvent(AddProductEvent.Submit(context))
+                    onEvent(AddProductEvent.Submit)
                     onNavigateToHome()
                 },
                 onBack = { step = AddProductStep.entries[step.ordinal - 1] }

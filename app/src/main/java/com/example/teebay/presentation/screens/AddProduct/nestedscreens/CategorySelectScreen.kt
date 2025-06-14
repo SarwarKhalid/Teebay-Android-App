@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.teebay.presentation.components.CategorySelector
 
 @Composable
 fun CategorySelectScreen(
@@ -26,15 +27,7 @@ fun CategorySelectScreen(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Select Categories")
-        allCategories.forEach { category ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = selectedCategories.contains(category),
-                    onCheckedChange = { onCategoryToggle(category) }
-                )
-                Text(category)
-            }
-        }
+        CategorySelector(selectedCategories, allCategories, onCategoryToggle)
         Spacer(Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween) {
             OutlinedButton(

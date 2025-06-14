@@ -7,23 +7,37 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun SetupNavigation() {
     val navController = rememberNavController()
-    //TODO: Change start destination to Home
+    //TODO: Add named parameters
     NavHost(navController, startDestination = HomeRoute) {
         loginDestination(
             onNavigateToHome = { navController.navigatePopUpToHome() },
             onNavigateToSignup = { navController.navigateToSignup() }
 
         )
-        signupDestination {
-            navController.navigatePopUpToHome()
-        }
+
+        signupDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
 
         homeDestination(
             onNavigateToLogin = { navController.navigateToLogin() },
             onNavigateToMyProducts = { navController.navigatePopUpToHome() },
-            onNavigateToAddProduct = { navController.navigateToAddProduct() }
+            onNavigateToAddProduct = { navController.navigateToAddProduct() },
+            onNavigateToEditProduct = { product ->
+                product.run{
+                    navController.navigateToEditProduct(
+                        id = id,
+                        title = title,
+                        categories = categories,
+                        description = description,
+                        purchasePrice = purchasePrice,
+                        rentPrice = rentPrice,
+                        rentOption = rentOption
+                    )
+                }
+            }
         )
 
-        addProductDestination { navController.navigatePopUpToHome() }
+        addProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
+
+        editProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
     }
 }

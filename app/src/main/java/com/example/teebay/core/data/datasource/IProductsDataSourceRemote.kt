@@ -12,4 +12,6 @@ interface IProductsDataSourceRemote {
     suspend fun deleteProduct(productId: Int)
 
     suspend fun uploadProduct(context: Context, product: Product, productImageUri: Uri): Result<Product>
+
+    suspend fun editProduct(product: Product): Result<Product>
 }

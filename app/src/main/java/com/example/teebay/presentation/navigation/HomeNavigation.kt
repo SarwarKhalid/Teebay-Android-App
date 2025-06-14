@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.teebay.core.model.Product
 import com.example.teebay.presentation.screens.Home.HomeScreen
 import com.example.teebay.presentation.screens.Home.HomeViewModel
 import kotlinx.serialization.Serializable
@@ -17,7 +18,8 @@ object HomeRoute
 fun NavGraphBuilder.homeDestination(
     onNavigateToLogin: () -> Unit,
     onNavigateToMyProducts: () -> Unit,
-    onNavigateToAddProduct: () -> Unit
+    onNavigateToAddProduct: () -> Unit,
+    onNavigateToEditProduct: (Product) -> Unit
 ) {
     composable<HomeRoute> {
         val viewModel: HomeViewModel = hiltViewModel()
@@ -27,7 +29,8 @@ fun NavGraphBuilder.homeDestination(
             viewModel::onEvent,
             onNavigateToLogin,
             onNavigateToMyProducts,
-            onNavigateToAddProduct
+            onNavigateToAddProduct,
+            onNavigateToEditProduct
         )
     }
 }

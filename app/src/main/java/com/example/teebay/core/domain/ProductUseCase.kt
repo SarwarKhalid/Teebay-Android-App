@@ -16,4 +16,8 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
     suspend fun uploadProduct(context: Context, product: Product, productImageUri: Uri): Result<Product> {
         return productRepository.uploadProduct(context, product, productImageUri)
     }
+
+    suspend fun editProduct(product: Product): Result<Product> {
+        return productRepository.editProduct(product)
+    }
 }

@@ -71,6 +71,34 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         }
 
     }
+
+    override suspend fun editProduct(
+        product: Product
+    ): Result<Product> {
+        Log.i(TAG, "editProduct")
+        val response = NetworkUtils.handleApiResponse {
+            product.run {
+                apiService.editProduct(
+                    id,
+                    title.toRequestBodyPart(),
+                    description.toRequestBodyPart(),
+                    categories.toRequestBodyPartList(),
+                    purchasePrice.toRequestBodyPart(),
+                    rentPrice.toRequestBodyPart(),
+                    rentOption.toRequestBodyPart()
+                )
+            }
+        }
+        Log.i(TAG,response.toString())
+        return when(response){
+            is Result.Success -> {
+                Result.Success(response.data.toProduct())
+            }
+            is Result.Failure -> {
+                response
+            }
+        }
+    }
 }
 
 private fun getFileFromUri(context: Context, uri: Uri): File {
@@ -82,13 +110,13 @@ private fun getFileFromUri(context: Context, uri: Uri): File {
     return tempFile
 }
 
-fun String.toRequestBodyPart(): RequestBody =
+private fun String.toRequestBodyPart(): RequestBody =
     this.toRequestBody("text/plain".toMediaTypeOrNull())
 
-fun List<String>.toRequestBodyPartList(): ArrayList<RequestBody> =
+private fun List<String>.toRequestBodyPartList(): ArrayList<RequestBody> =
     ArrayList(this.map { it.toRequestBody("text/plain".toMediaTypeOrNull()) })
 
-fun File.toImagePart(fieldName: String = "product_image"): MultipartBody.Part {
+private fun File.toImagePart(fieldName: String = "product_image"): MultipartBody.Part {
     val imageRequest = this.asRequestBody("image/*".toMediaTypeOrNull())
     return MultipartBody.Part.createFormData(fieldName, this.name, imageRequest)
 }
