@@ -35,29 +35,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.teebay.core.model.Product
 import com.example.teebay.core.model.Result
-import com.example.teebay.presentation.components.DrawerScaffold
+import com.example.teebay.presentation.components.SideNavigationDrawer
 
 @Composable
 fun HomeScreen(
+    navController: NavController,
     uiState: HomeUiState,
     onEvent: (HomeEvent) -> Unit,
-    onNavigateToLogin: () -> Unit,
-    onNavigateToMyProducts: () -> Unit,
     onNavigateToAddProduct: () -> Unit,
     onNavigateToEditProduct: (Product) -> Unit,
-    onNavigateToAllProducts: () -> Unit
+    onNavigateToLogin: () -> Unit,
 ) {
     if (uiState.isLoggedIn == true) {
-        DrawerScaffold(
-            onMyProductsClick = onNavigateToMyProducts,
-            onLogout = {
-                onEvent(HomeEvent.OnLogout)
-                onNavigateToLogin()
-            },
+        SideNavigationDrawer(
             title = "My Products",
-            onAllProductsClick = { onNavigateToAllProducts() },
+            navController = navController,
             floatingActionButton = {
                 FloatingActionButton(onClick = { onNavigateToAddProduct() }) {
                     Icon(Icons.Default.Add, contentDescription = "Add Product")

@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -23,8 +21,10 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavController
 import com.example.teebay.presentation.navigation.navigatePopUpToHome
+import com.example.teebay.presentation.navigation.navigateToAllProducts
+import com.example.teebay.presentation.navigation.navigateToLogin
 import kotlinx.coroutines.launch
 
 /**
@@ -32,11 +32,9 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DrawerScaffold(
+fun SideNavigationDrawer(
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-    onMyProductsClick: () -> Unit,
-    onAllProductsClick: () -> Unit,
-    onLogout: () -> Unit,
+    navController: NavController,
     floatingActionButton: @Composable () -> Unit = {},
     title: String = "",
     content: @Composable (PaddingValues) -> Unit
@@ -52,7 +50,7 @@ fun DrawerScaffold(
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        onMyProductsClick()
+                        navController.navigatePopUpToHome()
                     },
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
@@ -62,7 +60,7 @@ fun DrawerScaffold(
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        onAllProductsClick()
+                        navController.navigateToAllProducts()
                     },
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
@@ -74,7 +72,7 @@ fun DrawerScaffold(
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
-                        onLogout()
+                        navController.navigateToLogin()
                     },
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )

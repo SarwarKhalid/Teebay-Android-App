@@ -14,12 +14,10 @@ fun SetupNavigation() {
             onNavigateToSignup = { navController.navigateToSignup() }
 
         )
-
         signupDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
-
         homeDestination(
+            navController = navController,
             onNavigateToLogin = { navController.navigateToLogin() },
-            onNavigateToMyProducts = { navController.navigatePopUpToHome() },
             onNavigateToAddProduct = { navController.navigateToAddProduct() },
             onNavigateToEditProduct = { product ->
                 product.run{
@@ -34,18 +32,9 @@ fun SetupNavigation() {
                     )
                 }
             },
-            onNavigateToAllProducts = { navController.navigateToAllProducts() }
         )
-
-        allProductsDestination(
-            onNavigateToMyProducts = { navController.navigatePopUpToHome() },
-            onNavigateToProductDetails = {  },
-            onNavigateToLogin = { navController.navigateToLogin() },
-            onNavigateToAllProducts = { navController.navigateToAllProducts() }
-        )
-
         addProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
-
         editProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
+        allProductsDestination(navController = navController, onNavigateToProductDetails = {  }) //TODO
     }
 }

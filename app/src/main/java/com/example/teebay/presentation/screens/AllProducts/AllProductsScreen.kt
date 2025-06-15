@@ -13,24 +13,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.teebay.core.model.Product
 import com.example.teebay.core.model.Result
-import com.example.teebay.presentation.components.DrawerScaffold
+import com.example.teebay.presentation.components.SideNavigationDrawer
 
 @Composable
 fun AllProductsScreen(
+    navController: NavController,
     uiState: AllProductsUiState,
     onEvent: (AllProductsEvent) -> Unit,
     onNavigateToProductDetails: (Product) -> Unit,
-    onNavigateToMyProducts: () -> Unit,
-    onNavigateToLogin: () -> Unit,
-    onNavigateToAllProducts: () -> Unit
 ) {
-    DrawerScaffold(
+    SideNavigationDrawer(
         title = "All Products",
-        onMyProductsClick = onNavigateToMyProducts,
-        onAllProductsClick =  onNavigateToAllProducts,
-        onLogout = onNavigateToLogin
+        navController = navController
     ) { padding ->
         Column(
             modifier = Modifier

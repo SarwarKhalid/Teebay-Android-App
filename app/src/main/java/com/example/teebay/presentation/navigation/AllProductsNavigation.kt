@@ -15,21 +15,17 @@ import kotlinx.serialization.Serializable
 object AllProductsRoute
 
 fun NavGraphBuilder.allProductsDestination(
-    onNavigateToMyProducts: () -> Unit,
+    navController: NavController,
     onNavigateToProductDetails: (Product) -> Unit,
-    onNavigateToLogin: () -> Unit,
-    onNavigateToAllProducts: () -> Unit
 ) {
     composable<AllProductsRoute> {
         val viewModel: AllProductsViewModel = hiltViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         AllProductsScreen(
+            navController = navController,
             uiState = uiState,
             onEvent = viewModel::onEvent,
-            onNavigateToMyProducts = onNavigateToMyProducts,
             onNavigateToProductDetails = onNavigateToProductDetails,
-            onNavigateToLogin = onNavigateToLogin,
-            onNavigateToAllProducts = onNavigateToAllProducts
         )
     }
 }
