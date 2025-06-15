@@ -19,18 +19,20 @@ fun NavGraphBuilder.homeDestination(
     onNavigateToLogin: () -> Unit,
     onNavigateToMyProducts: () -> Unit,
     onNavigateToAddProduct: () -> Unit,
-    onNavigateToEditProduct: (Product) -> Unit
+    onNavigateToEditProduct: (Product) -> Unit,
+    onNavigateToAllProducts: () -> Unit
 ) {
     composable<HomeRoute> {
         val viewModel: HomeViewModel = hiltViewModel()
         val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
         HomeScreen(
-            homeUiState,
-            viewModel::onEvent,
-            onNavigateToLogin,
-            onNavigateToMyProducts,
-            onNavigateToAddProduct,
-            onNavigateToEditProduct
+            uiState = homeUiState,
+            onEvent = viewModel::onEvent,
+            onNavigateToLogin = onNavigateToLogin,
+            onNavigateToMyProducts = onNavigateToMyProducts,
+            onNavigateToAddProduct = onNavigateToAddProduct,
+            onNavigateToEditProduct = onNavigateToEditProduct,
+            onNavigateToAllProducts = onNavigateToAllProducts
         )
     }
 }

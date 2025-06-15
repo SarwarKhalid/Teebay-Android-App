@@ -46,7 +46,8 @@ fun HomeScreen(
     onNavigateToLogin: () -> Unit,
     onNavigateToMyProducts: () -> Unit,
     onNavigateToAddProduct: () -> Unit,
-    onNavigateToEditProduct: (Product) -> Unit
+    onNavigateToEditProduct: (Product) -> Unit,
+    onNavigateToAllProducts: () -> Unit
 ) {
     if (uiState.isLoggedIn == true) {
         DrawerScaffold(
@@ -56,6 +57,7 @@ fun HomeScreen(
                 onNavigateToLogin()
             },
             title = "My Products",
+            onAllProductsClick = { onNavigateToAllProducts() },
             floatingActionButton = {
                 FloatingActionButton(onClick = { onNavigateToAddProduct() }) {
                     Icon(Icons.Default.Add, contentDescription = "Add Product")

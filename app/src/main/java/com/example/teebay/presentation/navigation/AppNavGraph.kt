@@ -33,7 +33,15 @@ fun SetupNavigation() {
                         rentOption = rentOption
                     )
                 }
-            }
+            },
+            onNavigateToAllProducts = { navController.navigateToAllProducts() }
+        )
+
+        allProductsDestination(
+            onNavigateToMyProducts = { navController.navigatePopUpToHome() },
+            onNavigateToProductDetails = {  },
+            onNavigateToLogin = { navController.navigateToLogin() },
+            onNavigateToAllProducts = { navController.navigateToAllProducts() }
         )
 
         addProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })

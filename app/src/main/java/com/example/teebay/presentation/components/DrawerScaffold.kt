@@ -23,20 +23,25 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.example.teebay.presentation.navigation.navigatePopUpToHome
 import kotlinx.coroutines.launch
 
+/**
+ * Component for side navigation bar
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawerScaffold(
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     onMyProductsClick: () -> Unit,
+    onAllProductsClick: () -> Unit,
     onLogout: () -> Unit,
     floatingActionButton: @Composable () -> Unit = {},
     title: String = "",
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -55,7 +60,10 @@ fun DrawerScaffold(
                 NavigationDrawerItem(
                     label = { Text("All Products") },
                     selected = false,
-                    onClick = {},
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        onAllProductsClick()
+                    },
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
 

@@ -22,6 +22,19 @@ class ProductRepository @Inject constructor(private val remoteDataSourceRemote: 
         }
     }
 
+    suspend fun getAllProductsRemote(userId: Int): Result<List<Product>> {
+        val productsResult = remoteDataSourceRemote.getProducts()
+        return when (productsResult) {
+            is Result.Success -> {
+                Result.Success(productsResult.data.filter { it.seller != userId })
+            }
+
+            is Result.Failure -> {
+                productsResult
+            }
+        }
+    }
+
     suspend fun deleteProduct(productId: Int) {
         remoteDataSourceRemote.deleteProduct(productId)
     }

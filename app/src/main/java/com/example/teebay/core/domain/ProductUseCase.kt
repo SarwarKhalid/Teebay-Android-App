@@ -9,7 +9,9 @@ import javax.inject.Inject
 
 class ProductUseCase @Inject constructor(private val productRepository: ProductRepository) {
 
-    suspend fun getProductsByUser(userId: Int) = productRepository.getProductsByUserRemote(userId)
+    suspend fun getProductsByUserRemote(userId: Int) = productRepository.getProductsByUserRemote(userId)
+
+    suspend fun getAllProductsRemote(userId: Int) = productRepository.getAllProductsRemote(userId)
 
     suspend fun deleteProduct(productId: Int) = productRepository.deleteProduct(productId)
 

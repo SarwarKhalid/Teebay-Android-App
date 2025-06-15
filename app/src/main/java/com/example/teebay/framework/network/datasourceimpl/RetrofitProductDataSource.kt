@@ -23,7 +23,6 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
     IProductsDataSourceRemote {
     override suspend fun getProducts(): Result<List<Product>> {
         Log.i(TAG, "getProducts")
-
         val response = NetworkUtils.handleApiResponse {
             apiService.getProducts()
         }
@@ -36,7 +35,6 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
                 response
             }
         }
-
     }
 
     override suspend fun deleteProduct(productId: Int) {
