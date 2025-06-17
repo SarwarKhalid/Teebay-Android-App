@@ -4,11 +4,16 @@ import com.example.teebay.core.data.datasource.IUserDataSourceLocal
 import com.example.teebay.core.data.datasource.IUserDataSourceRemote
 import com.example.teebay.core.model.User
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository @Inject constructor(
     private val remoteDatasource: IUserDataSourceRemote,
     private val localDataSource: IUserDataSourceLocal
 ) {
+
+    // In-memory cache
+    private var cachedUser: User? = null
 
     suspend fun registerUser(
         email: String,

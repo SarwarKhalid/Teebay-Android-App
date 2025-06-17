@@ -14,4 +14,6 @@ interface IProductsDataSourceRemote {
     suspend fun uploadProduct(context: Context, product: Product, productImageUri: Uri): Result<Product>
 
     suspend fun editProduct(product: Product): Result<Product>
+
+    suspend fun buyProduct(buyerId: Int, productId: Int): Result<Any>
 }

@@ -8,6 +8,7 @@ import com.example.teebay.core.model.Product
 import com.example.teebay.core.model.Result
 import com.example.teebay.framework.network.ApiService
 import com.example.teebay.framework.network.NetworkUtils
+import com.example.teebay.framework.network.request.PurchaseProductRequest
 import com.example.teebay.framework.network.response.toProduct
 import jakarta.inject.Inject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,11 +27,12 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         val response = NetworkUtils.handleApiResponse {
             apiService.getProducts()
         }
-        Log.i(TAG,response.toString())
-        return when(response) {
+        Log.i(TAG, response.toString())
+        return when (response) {
             is Result.Success -> {
                 Result.Success(response.data.map { it.toProduct() })
             }
+
             is Result.Failure -> {
                 response
             }
@@ -42,7 +44,11 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         apiService.deleteProduct(productId)
     }
 
-    override suspend fun uploadProduct(context: Context,product: Product, productImageUri: Uri): Result<Product> {
+    override suspend fun uploadProduct(
+        context: Context,
+        product: Product,
+        productImageUri: Uri
+    ): Result<Product> {
         Log.i(TAG, "uploadProduct")
         val response = NetworkUtils.handleApiResponse {
             product.run {
@@ -58,11 +64,12 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
                 )
             }
         }
-        Log.i(TAG,response.toString())
-        return when(response){
+        Log.i(TAG, response.toString())
+        return when (response) {
             is Result.Success -> {
                 Result.Success(response.data.toProduct())
             }
+
             is Result.Failure -> {
                 response
             }
@@ -87,14 +94,25 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
                 )
             }
         }
-        Log.i(TAG,response.toString())
-        return when(response){
+        Log.i(TAG, response.toString())
+        return when (response) {
             is Result.Success -> {
                 Result.Success(response.data.toProduct())
             }
+
             is Result.Failure -> {
                 response
             }
+        }
+    }
+
+    override suspend fun buyProduct(buyerId: Int, productId: Int): Result<Any> {
+        Log.i(TAG, "buyProduct")
+        val response = NetworkUtils.handleApiResponse {
+            apiService.buyProduct(PurchaseProductRequest(buyerId, productId))
+        }
+        return response.also {
+            Log.i(TAG, it.toString())
         }
     }
 }

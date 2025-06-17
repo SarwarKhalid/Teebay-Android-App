@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.teebay.core.model.Product
@@ -33,3 +34,10 @@ fun NavGraphBuilder.allProductsDestination(
 fun NavController.navigateToAllProducts() {
     navigate(route = AllProductsRoute)
 }
+
+fun NavController.navigatePopUpToAllProducts() {
+    navigate(route = AllProductsRoute) {
+        popUpTo(AllProductsRoute) { inclusive = false }
+    }
+}
+

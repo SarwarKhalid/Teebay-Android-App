@@ -1,9 +1,11 @@
 package com.example.teebay.framework.network
 
 import com.example.teebay.framework.network.request.LoginUserRequest
+import com.example.teebay.framework.network.request.PurchaseProductRequest
 import com.example.teebay.framework.network.request.RegisterUserRequest
 import com.example.teebay.framework.network.response.LoginUserResponse
 import com.example.teebay.framework.network.response.ProductResponse
+import com.example.teebay.framework.network.response.PurchaseProductResponse
 import com.example.teebay.framework.network.response.RegisterUserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -60,4 +62,7 @@ interface ApiService {
         @Part("rent_price") rentPrice: RequestBody,
         @Part("rent_option") rentOption: RequestBody
     ): Response<ProductResponse>
+
+    @POST("api/transactions/purchases/")
+    suspend fun buyProduct(@Body body: PurchaseProductRequest): Response<PurchaseProductResponse>
 }

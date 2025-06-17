@@ -7,7 +7,6 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun SetupNavigation() {
     val navController = rememberNavController()
-    //TODO: Add named parameters
     NavHost(navController, startDestination = HomeRoute) {
         loginDestination(
             onNavigateToHome = { navController.navigatePopUpToHome() },
@@ -20,7 +19,7 @@ fun SetupNavigation() {
             onNavigateToLogin = { navController.navigateToLogin() },
             onNavigateToAddProduct = { navController.navigateToAddProduct() },
             onNavigateToEditProduct = { product ->
-                product.run{
+                product.run {
                     navController.navigateToEditProduct(
                         id = id,
                         title = title,
@@ -35,6 +34,14 @@ fun SetupNavigation() {
         )
         addProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
         editProductDestination(onNavigateToHome = { navController.navigatePopUpToHome() })
-        allProductsDestination(navController = navController, onNavigateToProductDetails = {  }) //TODO
+        allProductsDestination(
+            navController = navController,
+            onNavigateToProductDetails = { product ->
+                navController.navigateToProductDetails(product)
+            }
+        )
+        productDetailsDestination(
+            onNavigateToAllProducts = { navController.navigatePopUpToAllProducts() }
+        )
     }
 }

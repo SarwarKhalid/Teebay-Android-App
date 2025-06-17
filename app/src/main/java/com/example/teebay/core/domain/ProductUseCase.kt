@@ -22,4 +22,8 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
     suspend fun editProduct(product: Product): Result<Product> {
         return productRepository.editProduct(product)
     }
+
+    suspend fun buyProduct(buyerId: Int, productId: Int): Result<Any> {
+        return productRepository.buyProduct(buyerId, productId)
+    }
 }
