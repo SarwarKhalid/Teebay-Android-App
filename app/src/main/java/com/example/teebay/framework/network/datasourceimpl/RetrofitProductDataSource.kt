@@ -9,6 +9,7 @@ import com.example.teebay.core.model.Result
 import com.example.teebay.framework.network.ApiService
 import com.example.teebay.framework.network.NetworkUtils
 import com.example.teebay.framework.network.request.PurchaseProductRequest
+import com.example.teebay.framework.network.request.RentProductRequest
 import com.example.teebay.framework.network.response.toProduct
 import jakarta.inject.Inject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -110,6 +111,22 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         Log.i(TAG, "buyProduct")
         val response = NetworkUtils.handleApiResponse {
             apiService.buyProduct(PurchaseProductRequest(buyerId, productId))
+        }
+        return response.also {
+            Log.i(TAG, it.toString())
+        }
+    }
+
+    override suspend fun rentProduct(
+        renterId: Int,
+        productId: Int,
+        rentOption: String,
+        startDate: String,
+        endDate: String
+    ): Result<Any> {
+        Log.i(TAG, "rentProduct")
+        val response = NetworkUtils.handleApiResponse {
+            apiService.rentProduct(RentProductRequest(renterId, productId, rentOption, startDate, endDate))
         }
         return response.also {
             Log.i(TAG, it.toString())

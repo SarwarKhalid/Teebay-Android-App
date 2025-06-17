@@ -7,10 +7,10 @@ import com.example.teebay.core.model.Product
 import com.example.teebay.core.model.Result
 import javax.inject.Inject
 
-class ProductRepository @Inject constructor(private val remoteDataSourceRemote: IProductsDataSourceRemote) {
+class ProductRepository @Inject constructor(private val productDataSourceRemote: IProductsDataSourceRemote) {
 
     suspend fun getProductsByUserRemote(userId: Int): Result<List<Product>> {
-        val productsResult = remoteDataSourceRemote.getProducts()
+        val productsResult = productDataSourceRemote.getProducts()
         return when (productsResult) {
             is Result.Success -> {
                 Result.Success(productsResult.data.filter { it.seller == userId })
@@ -23,7 +23,7 @@ class ProductRepository @Inject constructor(private val remoteDataSourceRemote: 
     }
 
     suspend fun getAllProductsRemote(userId: Int): Result<List<Product>> {
-        val productsResult = remoteDataSourceRemote.getProducts()
+        val productsResult = productDataSourceRemote.getProducts()
         return when (productsResult) {
             is Result.Success -> {
                 Result.Success(productsResult.data.filter { it.seller != userId })
@@ -36,18 +36,22 @@ class ProductRepository @Inject constructor(private val remoteDataSourceRemote: 
     }
 
     suspend fun deleteProduct(productId: Int) {
-        remoteDataSourceRemote.deleteProduct(productId)
+        productDataSourceRemote.deleteProduct(productId)
     }
 
     suspend fun uploadProduct(context: Context, product: Product, productImageUri: Uri): Result<Product> {
-        return remoteDataSourceRemote.uploadProduct(context,product,productImageUri)
+        return productDataSourceRemote.uploadProduct(context,product,productImageUri)
     }
 
     suspend fun editProduct(product: Product): Result<Product> {
-        return remoteDataSourceRemote.editProduct(product)
+        return productDataSourceRemote.editProduct(product)
     }
 
     suspend fun buyProduct(buyerId: Int, productId: Int): Result<Any> {
-        return remoteDataSourceRemote.buyProduct(buyerId, productId)
+        return productDataSourceRemote.buyProduct(buyerId, productId)
+    }
+
+    suspend fun rentProduct(renterId: Int, productId: Int, rentOption: String, startDate: String, endDate: String): Result<Any> {
+        return productDataSourceRemote.rentProduct(renterId, productId, rentOption, startDate, endDate)
     }
 }

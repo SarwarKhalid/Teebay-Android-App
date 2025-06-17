@@ -16,4 +16,6 @@ interface IProductsDataSourceRemote {
     suspend fun editProduct(product: Product): Result<Product>
 
     suspend fun buyProduct(buyerId: Int, productId: Int): Result<Any>
+
+    suspend fun rentProduct(renterId: Int, productId: Int, rentOption: String, startDate: String, endDate: String): Result<Any>
 }
