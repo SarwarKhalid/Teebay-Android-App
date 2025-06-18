@@ -4,15 +4,16 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.gms)
     kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
-    namespace = "com.example.teebay"
+    namespace = "com.teebay.appname"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.teebay"
+        applicationId = "com.teebay.appname"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
@@ -52,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,4 +83,7 @@ dependencies {
     //Coil for image loading
     implementation(libs.coil.compose)
     implementation(libs.coil.okhttp)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
 }
