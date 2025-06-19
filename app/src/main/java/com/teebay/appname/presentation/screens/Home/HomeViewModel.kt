@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(
     private fun updateProducts(userId: Int) {
         Log.i(TAG, "updateProducts")
         viewModelScope.launch(Dispatchers.IO) {
-            val products = productUseCase.getProductsByUserRemote(userId).also {
+            val products = productUseCase.getUserProducts(userId).also {
                 Log.i(TAG, it.toString())
             }
             _uiState.update {

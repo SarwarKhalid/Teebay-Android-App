@@ -61,7 +61,10 @@ fun DashboardScreen(
                 }
 
                 is Result.Success -> {
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    LaunchedEffect(key1 = result) {
+                        Log.i(TAG,"Showing products: ${result.data.toString()}")
+                    }
+                    LazyColumn(modifier = Modifier.padding(25.dp),verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(result.data) { product ->
                             ProductItem(product)
                         }

@@ -5,12 +5,16 @@ import android.net.Uri
 import android.util.Log
 import com.teebay.appname.core.data.datasource.IProductsDataSourceRemote
 import com.teebay.appname.core.model.Product
+import com.teebay.appname.core.model.PurchasedProduct
+import com.teebay.appname.core.model.RentedProduct
 import com.teebay.appname.core.model.Result
 import com.teebay.appname.framework.network.ApiService
 import com.teebay.appname.framework.network.NetworkUtils
 import com.teebay.appname.framework.network.request.PurchaseProductRequest
 import com.teebay.appname.framework.network.request.RentProductRequest
 import com.teebay.appname.framework.network.response.toProduct
+import com.teebay.appname.framework.network.response.toPurchasedProduct
+import com.teebay.appname.framework.network.response.toRentedProduct
 import jakarta.inject.Inject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -23,6 +27,7 @@ private val TAG = "RetrofitProductDataSource"
 
 class RetrofitProductDataSource @Inject constructor(private val apiService: ApiService) :
     IProductsDataSourceRemote {
+
     override suspend fun getProducts(): Result<List<Product>> {
         Log.i(TAG, "getProducts")
         val response = NetworkUtils.handleApiResponse {
@@ -130,6 +135,40 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         }
         return response.also {
             Log.i(TAG, it.toString())
+        }
+    }
+
+    override suspend fun getPurchases(): Result<List<PurchasedProduct>> {
+        Log.i(TAG, "getPurchases")
+        val response = NetworkUtils.handleApiResponse {
+            apiService.getPurchases()
+        }
+        Log.i(TAG,response.toString())
+        return when(response) {
+            is Result.Success -> {
+                Result.Success(response.data.map { it.toPurchasedProduct() })
+            }
+
+            is Result.Failure -> {
+                response
+            }
+        }
+    }
+
+    override suspend fun getRentals(): Result<List<RentedProduct>> {
+        Log.i(TAG, "getRentals")
+        val response = NetworkUtils.handleApiResponse {
+            apiService.getRentals()
+        }
+        Log.i(TAG,response.toString())
+        return when(response) {
+            is Result.Success -> {
+                Result.Success(response.data.map { it.toRentedProduct() })
+            }
+
+            is Result.Failure -> {
+                response
+            }
         }
     }
 }

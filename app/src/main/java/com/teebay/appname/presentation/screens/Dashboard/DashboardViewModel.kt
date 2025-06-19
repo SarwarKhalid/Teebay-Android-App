@@ -2,7 +2,10 @@ package com.teebay.appname.presentation.screens.Dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teebay.appname.core.data.repository.ProductRepository
+import com.teebay.appname.core.domain.ProductUseCase
+import com.teebay.appname.core.domain.UserUseCase
+import com.teebay.appname.core.model.Product
+import com.teebay.appname.core.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val repository: ProductRepository
+    private val userUseCase: UserUseCase,
+    private val productUseCase: ProductUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardUiState())
@@ -33,13 +37,21 @@ class DashboardViewModel @Inject constructor(
 
     private fun loadProductsForTab(tab: DashboardTab) {
         viewModelScope.launch {
-//            val result = when (tab) {
-//                ProductHistoryTab.BOUGHT -> repository.getBoughtProducts()
-//                ProductHistoryTab.SOLD -> repository.getSoldProducts()
-//                ProductHistoryTab.BORROWED -> repository.getBorrowedProducts()
-//                ProductHistoryTab.LENT -> repository.getLentProducts()
-//            }
-//            _uiState.update { it.copy(products = result) }
+            userUseCase.getLoggedInUser().collect { user ->
+              if(user != null) {
+                  var productList: Result<List<Product>>? = null
+                  when(tab) {
+                      DashboardTab.BOUGHT -> productList = productUseCase.getUsersPurchasedProducts(user.id)
+                      DashboardTab.SOLD ->  productList = productUseCase.getUsersSoldProducts(user.id)
+                      DashboardTab.BORROWED ->  productList = productUseCase.getUsersRentedProducts(user.id)
+                      DashboardTab.LENT ->  productList = productUseCase.getUsersLentProducts(user.id)
+                  }
+                  _uiState.update { it.copy(products = productList) }
+              } else {
+                  _uiState.update { it.copy(products = Result.Failure()) }
+              }
+            }
+
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.teebay.appname.framework.network.response
 
 import com.google.gson.annotations.SerializedName
+import com.teebay.appname.core.model.RentedProduct
 
 data class RentProductResponse (
     @SerializedName("id")
@@ -22,3 +23,17 @@ data class RentProductResponse (
     @SerializedName("rent_date")
     val rentDate: String,
 )
+
+fun RentProductResponse.toRentedProduct(): RentedProduct {
+    return RentedProduct(
+        id = id,
+        renter = renter,
+        seller = seller,
+        product = product,
+        rentOption = rentOption,
+        startDate = startDate,
+        endDate = endDate,
+        totalPrice = totalPrice,
+        rentDate = rentDate
+    )
+}

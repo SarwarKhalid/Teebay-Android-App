@@ -65,8 +65,14 @@ interface ApiService {
         @Part("rent_option") rentOption: RequestBody
     ): Response<ProductResponse>
 
+    @GET("api/transactions/purchases/")
+    suspend fun getPurchases(): Response<List<PurchaseProductResponse>>
+
     @POST("api/transactions/purchases/")
     suspend fun buyProduct(@Body body: PurchaseProductRequest): Response<PurchaseProductResponse>
+
+    @GET("api/transactions/rentals/")
+    suspend fun getRentals(): Response<List<RentProductResponse>>
 
     @POST("api/transactions/rentals/")
     suspend fun rentProduct(@Body body: RentProductRequest): Response<RentProductResponse>

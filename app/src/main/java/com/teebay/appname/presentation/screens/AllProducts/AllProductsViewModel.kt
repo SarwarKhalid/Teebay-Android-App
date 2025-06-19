@@ -30,7 +30,7 @@ class AllProductsViewModel @Inject constructor(
                 user?.let { user ->
                     _uiState.update {
                         Log.i(TAG, "Updating products")
-                        it.copy(productsList = productUseCase.getAllProductsRemote(user.id))
+                        it.copy(productsList = productUseCase.getAllOthersProducts(user.id))
                     }
                 }
             }
