@@ -52,12 +52,15 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
 
         (allProducts as Result.Success).data.let { allProducts ->
             (purchasedProducts as Result.Success).data.let { purchasedProducts ->
-                val purchasedProductIdList = purchasedProducts.map { it.product }
-                return Result.Success(
-                    allProducts.filter {
-                        purchasedProductIdList.contains(it.id)
+                val purchaseCounts = purchasedProducts.groupingBy { it.product }.eachCount()
+                val resultList = mutableListOf<Product>()
+                for (product in allProducts) {
+                    val count = purchaseCounts[product.id] ?: 0
+                    repeat(count) {
+                        resultList.add(product)
                     }
-                )
+                }
+                return Result.Success(resultList)
             }
         }
     }
@@ -74,12 +77,15 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
 
         (allProducts as Result.Success).data.let { allProducts ->
             (soldProducts as Result.Success).data.let { soldProducts ->
-                val soldProductIdList = soldProducts.map { it.product }
-                return Result.Success(
-                    allProducts.filter {
-                        soldProductIdList.contains(it.id)
+                val soldCounts = soldProducts.groupingBy { it.product }.eachCount()
+                val resultList = mutableListOf<Product>()
+                for (product in allProducts) {
+                    val count = soldCounts[product.id] ?: 0
+                    repeat(count) {
+                        resultList.add(product)
                     }
-                )
+                }
+                return Result.Success(resultList)
             }
         }
     }
@@ -100,12 +106,15 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
 
         (allProducts as Result.Success).data.let { allProducts ->
             (rentedProducts as Result.Success).data.let { rentedProducts ->
-                val rentedProductIdList = rentedProducts.map { it.product }
-                return Result.Success(
-                    allProducts.filter {
-                        rentedProductIdList.contains(it.id)
+                val rentCounts = rentedProducts.groupingBy { it.product }.eachCount()
+                val resultList = mutableListOf<Product>()
+                for (product in allProducts) {
+                    val count = rentCounts[product.id] ?: 0
+                    repeat(count) {
+                        resultList.add(product)
                     }
-                )
+                }
+                return Result.Success(resultList)
             }
         }
     }
@@ -122,12 +131,15 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
 
         (allProducts as Result.Success).data.let { allProducts ->
             (lentProducts as Result.Success).data.let { lentProducts ->
-                val lentProductIdList = lentProducts.map { it.product }
-                return Result.Success(
-                    allProducts.filter {
-                        lentProductIdList.contains(it.id)
+                val lentCounts = lentProducts.groupingBy { it.product }.eachCount()
+                val resultList = mutableListOf<Product>()
+                for (product in allProducts) {
+                    val count = lentCounts[product.id] ?: 0
+                    repeat(count) {
+                        resultList.add(product)
                     }
-                )
+                }
+                return Result.Success(resultList)
             }
         }
     }

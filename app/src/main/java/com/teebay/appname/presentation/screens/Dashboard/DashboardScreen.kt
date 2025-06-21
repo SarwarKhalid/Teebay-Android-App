@@ -38,7 +38,7 @@ fun DashboardScreen(
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(start = 5.dp, end = 5.dp)
             ) {
                 DashboardTab.entries.forEach { tab ->
                     Log.i(TAG, tab.name)
