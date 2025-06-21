@@ -21,7 +21,11 @@ interface IProductsDataSourceRemote {
 
     suspend fun rentProduct(renterId: Int, productId: Int, rentOption: String, startDate: String, endDate: String): Result<Any>
 
+    suspend fun getPurchase(transactionId: Int): Result<PurchasedProduct>
+
     suspend fun getPurchases(): Result<List<PurchasedProduct>>
+
+    suspend fun getRental(transactionId: Int): Result<RentedProduct>
 
     suspend fun getRentals(): Result<List<RentedProduct>>
 }

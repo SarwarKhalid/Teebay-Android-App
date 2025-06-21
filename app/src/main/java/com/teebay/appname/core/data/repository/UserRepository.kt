@@ -35,10 +35,13 @@ class UserRepository @Inject constructor(
 
     fun getUserLocal() = localDataSource.getUser()
 
+    fun getCachedUser() = cachedUser
+
     // Clear Users table before an insert as it should only contain 1 row(the logged in user)
     suspend fun saveUser(user: User) {
         clearUsers()
         localDataSource.saveUser(user)
+        cachedUser = user
     }
 
     suspend fun clearUsers() = localDataSource.clearUsers()

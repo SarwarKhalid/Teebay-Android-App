@@ -81,6 +81,11 @@ class ProductRepository @Inject constructor(private val productDataSourceRemote:
         return productDataSourceRemote.rentProduct(renterId, productId, rentOption, startDate, endDate)
     }
 
+    suspend fun getPurchasedProduct(transactionID: Int): Result<PurchasedProduct> {
+        Log.i(TAG,"getPurchasedProduct")
+        return productDataSourceRemote.getPurchase(transactionID)
+    }
+
     suspend fun getUsersPurchasedProducts(userId: Int): Result<List<PurchasedProduct>> {
         Log.i(TAG,"getPurchases")
         val result = productDataSourceRemote.getPurchases()
@@ -103,6 +108,11 @@ class ProductRepository @Inject constructor(private val productDataSourceRemote:
 
             is Result.Failure -> result
         }
+    }
+
+    suspend fun getRentedProduct(transactionID: Int): Result<RentedProduct> {
+        Log.i(TAG,"getPurchasedProduct")
+        return productDataSourceRemote.getRental(transactionID)
     }
 
     suspend fun getUsersRentedProducts(userId: Int): Result<List<RentedProduct>> {

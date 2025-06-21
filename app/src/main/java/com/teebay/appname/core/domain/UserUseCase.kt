@@ -48,8 +48,16 @@ class UserUseCase @Inject constructor(private val userRepository: UserRepository
         userRepository.clearUsers()
     }
 
+    /**
+     * Retrieves logged in user from database
+     */
     fun getLoggedInUser(): Flow<User?> {
         Log.i(TAG,"getLoggedInUser")
         return userRepository.getUserLocal()
     }
+
+    /**
+     * Retrieves logged in user from cache
+     */
+    fun getLoggedInUserCached() = userRepository.getCachedUser()
 }

@@ -131,10 +131,35 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
     ): Result<Any> {
         Log.i(TAG, "rentProduct")
         val response = NetworkUtils.handleApiResponse {
-            apiService.rentProduct(RentProductRequest(renterId, productId, rentOption, startDate, endDate))
+            apiService.rentProduct(
+                RentProductRequest(
+                    renterId,
+                    productId,
+                    rentOption,
+                    startDate,
+                    endDate
+                )
+            )
         }
         return response.also {
             Log.i(TAG, it.toString())
+        }
+    }
+
+    override suspend fun getPurchase(transactionId: Int): Result<PurchasedProduct> {
+        Log.i(TAG, "getPurchase")
+        val response = NetworkUtils.handleApiResponse {
+            apiService.getPurchase(transactionId)
+        }
+        Log.i(TAG, response.toString())
+        return when (response) {
+            is Result.Success -> {
+                Result.Success(response.data.toPurchasedProduct())
+            }
+
+            is Result.Failure -> {
+                response
+            }
         }
     }
 
@@ -143,10 +168,27 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         val response = NetworkUtils.handleApiResponse {
             apiService.getPurchases()
         }
-        Log.i(TAG,response.toString())
-        return when(response) {
+        Log.i(TAG, response.toString())
+        return when (response) {
             is Result.Success -> {
                 Result.Success(response.data.map { it.toPurchasedProduct() })
+            }
+
+            is Result.Failure -> {
+                response
+            }
+        }
+    }
+
+    override suspend fun getRental(transactionId: Int): Result<RentedProduct> {
+        Log.i(TAG, "getRental")
+        val response = NetworkUtils.handleApiResponse {
+            apiService.getRental(transactionId)
+        }
+        Log.i(TAG, response.toString())
+        return when (response) {
+            is Result.Success -> {
+                Result.Success(response.data.toRentedProduct())
             }
 
             is Result.Failure -> {
@@ -160,8 +202,8 @@ class RetrofitProductDataSource @Inject constructor(private val apiService: ApiS
         val response = NetworkUtils.handleApiResponse {
             apiService.getRentals()
         }
-        Log.i(TAG,response.toString())
-        return when(response) {
+        Log.i(TAG, response.toString())
+        return when (response) {
             is Result.Success -> {
                 Result.Success(response.data.map { it.toRentedProduct() })
             }

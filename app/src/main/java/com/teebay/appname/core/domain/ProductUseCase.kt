@@ -5,6 +5,8 @@ import android.net.Uri
 import android.util.Log
 import com.teebay.appname.core.data.repository.ProductRepository
 import com.teebay.appname.core.model.Product
+import com.teebay.appname.core.model.PurchasedProduct
+import com.teebay.appname.core.model.RentedProduct
 import com.teebay.appname.core.model.Result
 import javax.inject.Inject
 
@@ -32,6 +34,10 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
 
     suspend fun rentProduct(renterId: Int, productId: Int, rentOption: String, startDate: String, endDate: String): Result<Any> {
         return productRepository.rentProduct(renterId, productId, rentOption, startDate, endDate)
+    }
+
+    suspend fun getPurchasedProduct(transactionID: Int): Result<PurchasedProduct> {
+        return productRepository.getPurchasedProduct(transactionID)
     }
 
     /**
@@ -78,6 +84,10 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
         }
     }
 
+    suspend fun getRentedProduct(transactionID: Int): Result<RentedProduct> {
+        return productRepository.getRentedProduct(transactionID)
+    }
+
     /**
      * For each Product in allProducts, if that product's ID exists in rentedProducts then adds it to a list which is returned.
      */
@@ -119,6 +129,44 @@ class ProductUseCase @Inject constructor(private val productRepository: ProductR
                     }
                 )
             }
+        }
+    }
+
+    /**
+     * Return true if the product purchased belongs to the current user
+     */
+    suspend fun needToShowPurchasedNotification(transactionId: Int, userId: Int): Boolean {
+        val purchasedProduct = productRepository.getPurchasedProduct(transactionId)
+        val result = when(purchasedProduct) {
+            is Result.Success -> {
+                 purchasedProduct.data.seller == userId
+            }
+
+            is Result.Failure -> {
+                 false
+            }
+        }
+        return result.also {
+            Log.i(TAG,"needToShowPurchasedNotification: $it")
+        }
+    }
+
+    /**
+     * Return true if the product rented belongs to the current user
+     */
+    suspend fun needToShowRentedNotification(transactionId: Int, userId: Int): Boolean {
+        val purchasedProduct = productRepository.getRentedProduct(transactionId)
+        val result = when(purchasedProduct) {
+            is Result.Success -> {
+                purchasedProduct.data.seller == userId
+            }
+
+            is Result.Failure -> {
+                false
+            }
+        }
+        return result.also {
+            Log.i(TAG,"needToShowRentedNotification: $it")
         }
     }
 }

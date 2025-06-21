@@ -17,29 +17,23 @@ object TeebayNotificationManager {
 
 //    private const val CHANNEL_ID = "Teebay_Notification_Channel"
 
-    fun showNotification(context: Context, title: String, message: String) {
-        val channelId = "default_channel_id"
-        val notificationId = 1
-        val notificationManager = getSystemService(context, NotificationManager::class.java)
+    private var notificationChannelCreated = false
+    private const val CHANNEL_ID = "default_channel_id"
+    private const val NOTIFICATION_ID = 1
 
-        // ✅ Create channel (required for Android 8+)
-        val channel = NotificationChannel(
-            channelId,
-            "Default Channel",
-            NotificationManager.IMPORTANCE_DEFAULT
-        ).apply {
-            description = "General notifications"
-        }
+    fun showNotification(context: Context, title: String, message: String) {
+        Log.i(TAG, "showNotification")
+        val notificationManager = getSystemService(context, NotificationManager::class.java)
+        createNotificationChannel(context, notificationManager)
         notificationManager?.let { notificationManager ->
-            notificationManager.createNotificationChannel(channel)
-            val notification = NotificationCompat.Builder(context, channelId)
+            val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .build()
             Log.i(TAG, "showing notification")
-            notificationManager.notify(notificationId, notification)
+            notificationManager.notify(NOTIFICATION_ID, notification)
         }
     }
 
@@ -52,5 +46,19 @@ object TeebayNotificationManager {
         } else {
             true // Permission automatically granted for < API 33
         }
+    }
+
+    private fun createNotificationChannel(context: Context, notificationManager: NotificationManager?) {
+        if (notificationChannelCreated) return
+        //Create channel (required for Android 8+)
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            "Default Channel",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "General notifications"
+        }
+        notificationManager?.createNotificationChannel(channel)
+        notificationChannelCreated = true
     }
 }

@@ -65,15 +65,21 @@ interface ApiService {
         @Part("rent_option") rentOption: RequestBody
     ): Response<ProductResponse>
 
-    @GET("api/transactions/purchases/")
-    suspend fun getPurchases(): Response<List<PurchaseProductResponse>>
-
     @POST("api/transactions/purchases/")
     suspend fun buyProduct(@Body body: PurchaseProductRequest): Response<PurchaseProductResponse>
 
-    @GET("api/transactions/rentals/")
-    suspend fun getRentals(): Response<List<RentProductResponse>>
+    @GET("api/transactions/purchases/{id}")
+    suspend fun getPurchase(@Path("id") transactionId: Int): Response<PurchaseProductResponse>
+
+    @GET("api/transactions/purchases/")
+    suspend fun getPurchases(): Response<List<PurchaseProductResponse>>
 
     @POST("api/transactions/rentals/")
     suspend fun rentProduct(@Body body: RentProductRequest): Response<RentProductResponse>
+
+    @GET("api/transactions/rentals/{id}")
+    suspend fun getRental(@Path("id") transactionId: Int): Response<RentProductResponse>
+
+    @GET("api/transactions/rentals/")
+    suspend fun getRentals(): Response<List<RentProductResponse>>
 }
