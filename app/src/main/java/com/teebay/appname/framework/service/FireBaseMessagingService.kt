@@ -1,17 +1,20 @@
 package com.teebay.appname.framework.service
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.teebay.appname.MainActivity
 import com.teebay.appname.core.domain.ProductUseCase
 import com.teebay.appname.core.domain.TokenUseCase
 import com.teebay.appname.core.domain.UserUseCase
+import com.teebay.appname.core.model.Result
 import com.teebay.appname.framework.Notification.TeebayNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,10 +44,11 @@ class FireBaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "Message body: ${body}")
         Log.d(TAG, "Message data: ${data}")
 
+        //TODO: Consider refactoring the logic to make it cleaner
         if (!title.isNullOrBlank() && !body.isNullOrBlank() && data.isNotBlank()) {
             val transactionId = getTransactionIdFromNotificationData(data)
             if (transactionId != null) {
-                Log.i(TAG,"Transaction ID: $transactionId")
+                Log.i(TAG, "Transaction ID: $transactionId")
                 scope.launch {
                     userUseCase.getLoggedInUserCached()?.let { user ->
                         if (title.contains("purchased") && productUseCase.needToShowPurchasedNotification(
@@ -52,30 +56,19 @@ class FireBaseMessagingService : FirebaseMessagingService() {
                                 user.id
                             )
                         ) {
-                            TeebayNotificationManager.showNotification(
-                                this@FireBaseMessagingService,
-                                title,
-                                body
-                            )
-
+                            showPurchasedProductNotification(title, body, transactionId)
                         } else if (title.contains("rented") && productUseCase.needToShowRentedNotification(
                                 transactionId,
                                 user.id
                             )
                         ) {
-                            TeebayNotificationManager.showNotification(
-                                this@FireBaseMessagingService,
-                                title,
-                                body
-                            )
-
+                            showRentedProductNotification(title, body, transactionId)
                         }
                     }
                 }
             } else {
                 Log.i(TAG, "Transaction ID is null")
             }
-
         }
     }
 
@@ -97,6 +90,43 @@ class FireBaseMessagingService : FirebaseMessagingService() {
             .split("=")
             .getOrNull(1)
             ?.toIntOrNull()
+    }
+
+    private fun getPendingIntent(notificationProductId: Int): PendingIntent? {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("product_id", notificationProductId)
+        }
+        return PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+    }
+
+    private suspend fun showPurchasedProductNotification(title:String, body:String, transactionId: Int) {
+        val purchasedProduct = productUseCase.getPurchasedProduct(transactionId)
+        if (purchasedProduct is Result.Success) {
+            TeebayNotificationManager.showNotification(
+                this@FireBaseMessagingService,
+                title,
+                body,
+                getPendingIntent(purchasedProduct.data.product)
+            )
+        }
+    }
+
+    private suspend fun showRentedProductNotification(title:String, body:String, transactionId: Int) {
+        val rentedProduct = productUseCase.getRentedProduct(transactionId)
+        if (rentedProduct is Result.Success) {
+            TeebayNotificationManager.showNotification(
+                this@FireBaseMessagingService,
+                title,
+                body,
+                getPendingIntent(rentedProduct.data.product)
+            )
+        }
     }
 
 }

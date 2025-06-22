@@ -7,13 +7,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.teebay.appname.core.model.Product
 import com.teebay.appname.presentation.screens.Home.HomeScreen
 import com.teebay.appname.presentation.screens.Home.HomeViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-object HomeRoute
+data class HomeRoute(val notificationProductId: Int? = null)
 
 fun NavGraphBuilder.homeDestination(
     navController: NavController,
@@ -21,9 +22,10 @@ fun NavGraphBuilder.homeDestination(
     onNavigateToAddProduct: () -> Unit,
     onNavigateToEditProduct: (Product) -> Unit,
 ) {
-    composable<HomeRoute> {
+    composable<HomeRoute> { navBackStackEntry ->
         val viewModel: HomeViewModel = hiltViewModel()
         val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
+        viewModel.setNotificationProductId(navBackStackEntry.toRoute<HomeRoute>().notificationProductId)
         HomeScreen(
             navController = navController,
             uiState = homeUiState,
@@ -36,7 +38,16 @@ fun NavGraphBuilder.homeDestination(
 }
 
 fun NavController.navigatePopUpToHome() {
-    navigate(route = HomeRoute) {
+    navigate(route = HomeRoute()) {
+        // Pops all destinations from the back stack up to and including the start destination of the current navigation graph.
+        popUpTo(graph.findStartDestination().id) {
+            inclusive = true
+        }
+    }
+}
+
+fun NavController.navigatePopUpToHomeWithNotificationId(notificationProductId: Int) {
+    navigate(route = HomeRoute(notificationProductId)) {
         // Pops all destinations from the back stack up to and including the start destination of the current navigation graph.
         popUpTo(graph.findStartDestination().id) {
             inclusive = true

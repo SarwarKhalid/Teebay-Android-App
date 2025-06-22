@@ -2,6 +2,7 @@ package com.teebay.appname.framework.Notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -15,13 +16,16 @@ private val TAG = "TeebayNotificationManager"
 
 object TeebayNotificationManager {
 
-//    private const val CHANNEL_ID = "Teebay_Notification_Channel"
-
     private var notificationChannelCreated = false
     private const val CHANNEL_ID = "default_channel_id"
     private const val NOTIFICATION_ID = 1
 
-    fun showNotification(context: Context, title: String, message: String) {
+    fun showNotification(
+        context: Context,
+        title: String,
+        message: String,
+        pendingIntent: PendingIntent?
+    ) {
         Log.i(TAG, "showNotification")
         val notificationManager = getSystemService(context, NotificationManager::class.java)
         createNotificationChannel(context, notificationManager)
@@ -30,6 +34,7 @@ object TeebayNotificationManager {
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
                 .setContentText(message)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build()
             Log.i(TAG, "showing notification")
@@ -48,7 +53,10 @@ object TeebayNotificationManager {
         }
     }
 
-    private fun createNotificationChannel(context: Context, notificationManager: NotificationManager?) {
+    private fun createNotificationChannel(
+        context: Context,
+        notificationManager: NotificationManager?
+    ) {
         if (notificationChannelCreated) return
         //Create channel (required for Android 8+)
         val channel = NotificationChannel(

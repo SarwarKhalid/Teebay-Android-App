@@ -7,8 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.NavHostController
 import com.teebay.appname.framework.Notification.TeebayNotificationManager.isNotificationPermissionGranted
-import com.teebay.appname.presentation.navigation.SetupNavigation
+import com.teebay.appname.presentation.navigation.navigatePopUpToHomeWithNotificationId
+import com.teebay.appname.presentation.navigation.setupNavigation
 import com.teebay.appname.presentation.theme.TeebayTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +19,8 @@ private val TAG = "MainActivity"
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private lateinit var navHostController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG,"onCreate")
         super.onCreate(savedInstanceState)
@@ -24,7 +28,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TeebayTheme {
-                SetupNavigation()
+                navHostController = setupNavigation()
+                val notificationProductId = intent?.getIntExtra("product_id",-1) ?: -1
+                if(notificationProductId != -1) {
+                    navHostController.navigatePopUpToHomeWithNotificationId(notificationProductId)
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,6 +26,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,9 +69,11 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 var productToDelete by remember { mutableStateOf<Product?>(null) }
+                val listState = rememberLazyListState()
 
                 if (uiState.productsList is Result.Success) {
                     LazyColumn(
+                        state = listState,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(16.dp)
@@ -78,12 +82,18 @@ fun HomeScreen(
                             ProductCard(
                                 product = product,
                                 onDeleteClick = { productToDelete = product },
-                                onNavigateToEditProduct = onNavigateToEditProduct
+                                onNavigateToEditProduct = onNavigateToEditProduct,
+                                isHighlighted = product.id == (uiState.notificationProductId ?: -1)
                             )
                             Spacer(Modifier.height(16.dp))
                         }
                     }
-
+                    LaunchedEffect(key1=uiState.productsList) {
+                        uiState.notificationProductId?.let{ id ->
+                            val index = uiState.productsList.data.indexOfFirst { it.id == id }
+                            listState.animateScrollToItem(index)
+                        }
+                    }
                     // Confirmation dialog
                     productToDelete?.let { product ->
                         AlertDialog(
@@ -119,14 +129,18 @@ fun HomeScreen(
 private fun ProductCard(
     product: Product,
     onDeleteClick: () -> Unit,
-    onNavigateToEditProduct: (Product) -> Unit
+    onNavigateToEditProduct: (Product) -> Unit,
+    isHighlighted: Boolean
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onNavigateToEditProduct(product) }
+            .clickable { onNavigateToEditProduct(product) },
+        colors = CardDefaults.cardColors(
+            containerColor = if (isHighlighted) Color.Yellow else Color.White
+        )
     ) {
         Column(Modifier.padding(16.dp)) {
             Row(

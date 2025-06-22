@@ -1,13 +1,14 @@
 package com.teebay.appname.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun SetupNavigation() {
+fun setupNavigation(): NavHostController {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = HomeRoute) {
+    NavHost(navController, startDestination = HomeRoute()) {
         loginDestination(
             onNavigateToHome = { navController.navigatePopUpToHome() },
             onNavigateToSignup = { navController.navigateToSignup() }
@@ -47,4 +48,5 @@ fun SetupNavigation() {
             navController = navController
         )
     }
+    return navController
 }

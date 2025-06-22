@@ -47,6 +47,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun setNotificationProductId(productId: Int?) {
+        _uiState.update { it.copy(notificationProductId = productId) }
+    }
+
     private fun updateProducts(userId: Int) {
         Log.i(TAG, "updateProducts")
         viewModelScope.launch(Dispatchers.IO) {

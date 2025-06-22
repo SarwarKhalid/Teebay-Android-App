@@ -7,5 +7,6 @@ import com.teebay.appname.core.model.User
 data class HomeUiState(
     val user: User? = null,
     val isLoggedIn: Boolean? = null,
-    val productsList: Result<List<Product>>? = null
+    val productsList: Result<List<Product>>? = null,
+    val notificationProductId: Int? = null
 )
