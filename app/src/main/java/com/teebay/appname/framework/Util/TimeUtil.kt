@@ -6,6 +6,7 @@ import java.time.ZoneOffset
 
 object TimeUtil {
 
+    //TODO: Handle invalid datetime
     fun convertLocalToUtcString(startDateTime: String): String {
         // Parse the local date-time string
         val localDateTime = LocalDateTime.parse(startDateTime)
