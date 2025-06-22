@@ -7,6 +7,7 @@ import com.teebay.appname.core.domain.ProductUseCase
 import com.teebay.appname.core.domain.UserUseCase
 import com.teebay.appname.core.model.Product
 import com.teebay.appname.core.model.Result.*
+import com.teebay.appname.framework.Util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -100,8 +101,8 @@ class ProductDetailsViewModel @Inject constructor(
                                         user.id,
                                         product.id,
                                         product.rentOption,
-                                        startDateTime,
-                                        endDateTime
+                                        TimeUtil.convertLocalToUtcString(startDateTime),
+                                        TimeUtil.convertLocalToUtcString(endDateTime)
                                     )
                                 )
                             }
