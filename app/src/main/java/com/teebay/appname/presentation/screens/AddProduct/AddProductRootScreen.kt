@@ -20,13 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import com.teebay.appname.framework.Util.ImagePickerManager
 import com.teebay.appname.presentation.screens.AddProduct.nestedscreens.CategorySelectScreen
 import com.teebay.appname.presentation.screens.AddProduct.nestedscreens.DescriptionScreen
 import com.teebay.appname.presentation.screens.AddProduct.nestedscreens.ImageUploadScreen
 import com.teebay.appname.presentation.screens.AddProduct.nestedscreens.PriceInputScreen
 import com.teebay.appname.presentation.screens.AddProduct.nestedscreens.ProductSummaryScreen
 import com.teebay.appname.presentation.screens.AddProduct.nestedscreens.ProductTitleScreen
-
 
 @Composable
 fun AddProductRootScreen(
@@ -35,14 +36,31 @@ fun AddProductRootScreen(
     onNavigateToHome: () -> Unit
 ) {
     var step by remember { mutableStateOf(AddProductStep.TITLE) }
-    val allCategories = listOf("electronics", "furniture", "home_appliances", "toys", "sporting_goods", "outdoor") //Placeholder for categories
+    val allCategories = listOf(
+        "electronics",
+        "furniture",
+        "home_appliances",
+        "toys",
+        "sporting_goods",
+        "outdoor"
+    ) //Placeholder for categories
     val context = LocalContext.current
-    val imageLauncher = rememberLauncherForActivityResult(
+    val imagePickerManager = remember { ImagePickerManager(context) }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            imagePickerManager.getFile()?.toUri()?.let {
+                onEvent(AddProductEvent.ImageSelected(it))
+            }
+        }
+    }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            onEvent(AddProductEvent.ImageSelected(it))
-        }
+        uri?.let { onEvent(AddProductEvent.ImageSelected(it)) }
     }
 
     Column(
@@ -59,7 +77,9 @@ fun AddProductRootScreen(
                 val currentStepIndex = step.ordinal + 1 // Steps are 0-based
                 currentStepIndex / totalSteps.toFloat()
             },
-            modifier = Modifier.fillMaxWidth().height(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(10.dp),
         )
         Spacer(modifier = Modifier.height(16.dp))
         when (step) {
@@ -74,23 +94,26 @@ fun AddProductRootScreen(
                 allCategories = allCategories,
                 onCategoryToggle = { onEvent(AddProductEvent.CategoryToggled(it)) },
                 onNext = { step = AddProductStep.DESCRIPTION },
-                onBack = { step = AddProductStep.entries[step.ordinal - 1]}
+                onBack = { step = AddProductStep.entries[step.ordinal - 1] }
             )
 
             AddProductStep.DESCRIPTION -> DescriptionScreen(
                 description = uiState.description,
                 onDescriptionChange = { onEvent(AddProductEvent.DescriptionChanged(it)) },
                 onNext = { step = AddProductStep.IMAGE },
-                onBack = { step = AddProductStep.entries[step.ordinal - 1]}
+                onBack = { step = AddProductStep.entries[step.ordinal - 1] }
             )
 
             AddProductStep.IMAGE -> ImageUploadScreen(
                 imageUri = uiState.imageUri,
-                onPickImageClick = {
-                    imageLauncher.launch("image/*")
+                onPickImageClick = { galleryLauncher.launch("image/*") },
+                onCaptureImageClick = {
+                    imagePickerManager.createNewImageFile()?.let{ uri ->
+                        cameraLauncher.launch(uri)
+                    }
                 },
                 onNext = { step = AddProductStep.PRICE },
-                onBack = { step = AddProductStep.entries[step.ordinal - 1]}
+                onBack = { step = AddProductStep.entries[step.ordinal - 1] }
             )
 
             AddProductStep.PRICE -> PriceInputScreen(
@@ -101,7 +124,7 @@ fun AddProductRootScreen(
                 onRentPriceChange = { onEvent(AddProductEvent.RentPriceChanged(it)) },
                 onRentOptionChange = { onEvent(AddProductEvent.RentOptionChanged(it)) },
                 onNext = { step = AddProductStep.SUMMARY },
-                onBack = { step = AddProductStep.entries[step.ordinal - 1]}
+                onBack = { step = AddProductStep.entries[step.ordinal - 1] }
             )
 
             AddProductStep.SUMMARY -> ProductSummaryScreen(
