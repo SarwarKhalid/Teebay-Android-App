@@ -37,21 +37,20 @@ class DashboardViewModel @Inject constructor(
 
     private fun loadProductsForTab(tab: DashboardTab) {
         viewModelScope.launch {
-            userUseCase.getLoggedInUser().collect { user ->
-              if(user != null) {
-                  var productList: Result<List<Product>>? = null
-                  when(tab) {
-                      DashboardTab.BOUGHT -> productList = productUseCase.getUsersPurchasedProducts(user.id)
-                      DashboardTab.SOLD ->  productList = productUseCase.getUsersSoldProducts(user.id)
-                      DashboardTab.BORROWED ->  productList = productUseCase.getUsersRentedProducts(user.id)
-                      DashboardTab.LENT ->  productList = productUseCase.getUsersLentProducts(user.id)
-                  }
-                  _uiState.update { it.copy(products = productList) }
-              } else {
-                  _uiState.update { it.copy(products = Result.Failure()) }
-              }
-            }
+            userUseCase.getLoggedInUserCached()?.let { user ->
+                var productList: Result<List<Product>>? = null
+                when (tab) {
+                    DashboardTab.BOUGHT -> productList =
+                        productUseCase.getUsersPurchasedProducts(user.id)
 
+                    DashboardTab.SOLD -> productList = productUseCase.getUsersSoldProducts(user.id)
+                    DashboardTab.BORROWED -> productList =
+                        productUseCase.getUsersRentedProducts(user.id)
+
+                    DashboardTab.LENT -> productList = productUseCase.getUsersLentProducts(user.id)
+                }
+                _uiState.update { it.copy(products = productList) }
+            }
         }
     }
 }

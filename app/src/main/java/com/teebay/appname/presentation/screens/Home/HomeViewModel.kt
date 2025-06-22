@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            userUseCase.getLoggedInUser().collect { user ->
+            val user = userUseCase.getLoggedInUserCached()
                 _uiState.update {
                     if (user == null) {
                         it.copy(isLoggedIn = false)
@@ -36,8 +36,6 @@ class HomeViewModel @Inject constructor(
                         it.copy(user = user, isLoggedIn = true)
                     }
                 }
-
-            }
         }
     }
 

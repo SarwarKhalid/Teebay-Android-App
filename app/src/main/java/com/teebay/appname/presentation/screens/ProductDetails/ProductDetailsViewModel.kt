@@ -28,9 +28,9 @@ class ProductDetailsViewModel @Inject constructor(
         when (event) {
             is ProductDetailsEvent.BuyProduct -> {
                 viewModelScope.launch {
-                    userUseCase.getLoggedInUser().collect { user ->
+                    userUseCase.getLoggedInUserCached()?.let { user ->
                         val product = _uiState.value.product
-                        if (user != null && product != null) {
+                        if (product != null) {
                             _uiState.update {
                                 it.copy(
                                     buyProductStatus = productUseCase.buyProduct(
@@ -92,8 +92,8 @@ class ProductDetailsViewModel @Inject constructor(
                 val endDateTime = _uiState.value.rentEndDateTime.toString()
                 Log.i("RENT", "Confirming rent: $startDateTime to $endDateTime for product ${product?.title}")
                 viewModelScope.launch {
-                    userUseCase.getLoggedInUser().collect { user ->
-                        if (user != null && product != null) {
+                    userUseCase.getLoggedInUserCached()?.let { user ->
+                        if (product != null) {
                             _uiState.update {
                                 it.copy(
                                     rentProductStatus = productUseCase.rentProduct(

@@ -51,8 +51,8 @@ class AddProductViewModel @Inject constructor(
         Log.i(TAG, "uploadProduct")
         val imageUri = _uiState.value.imageUri
         viewModelScope.launch {
-            userUseCase.getLoggedInUser().collect { user ->
-                if (user != null && imageUri != null) {
+            userUseCase.getLoggedInUserCached()?.let { user ->
+                if (imageUri != null) {
                     _uiState.update {
                         it.copy(
                             addProductStatus = productUseCase.uploadProduct(
@@ -68,6 +68,4 @@ class AddProductViewModel @Inject constructor(
             }
         }
     }
-
-
 }

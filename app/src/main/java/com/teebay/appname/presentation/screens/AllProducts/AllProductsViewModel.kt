@@ -26,12 +26,10 @@ class AllProductsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            userUseCase.getLoggedInUser().collect { user ->
-                user?.let { user ->
-                    _uiState.update {
-                        Log.i(TAG, "Updating products")
-                        it.copy(productsList = productUseCase.getAllOthersProducts(user.id))
-                    }
+            userUseCase.getLoggedInUserCached()?.let { user ->
+                _uiState.update {
+                    Log.i(TAG, "Updating products")
+                    it.copy(productsList = productUseCase.getAllOthersProducts(user.id))
                 }
             }
         }
