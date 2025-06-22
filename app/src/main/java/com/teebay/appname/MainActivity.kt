@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
                 val notificationProductId = intent?.getIntExtra("product_id",-1) ?: -1
                 if(notificationProductId != -1) {
                     navHostController.navigatePopUpToHomeWithNotificationId(notificationProductId)
+                } else {
+                    Log.i(TAG,intent.extras.toString())
                 }
             }
         }

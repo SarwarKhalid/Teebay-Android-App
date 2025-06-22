@@ -93,6 +93,7 @@ class FireBaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun getPendingIntent(notificationProductId: Int): PendingIntent? {
+        Log.d(TAG,"pending intent notificationProductId: $notificationProductId")
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra("product_id", notificationProductId)

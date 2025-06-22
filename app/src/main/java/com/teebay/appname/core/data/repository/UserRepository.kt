@@ -44,6 +44,10 @@ class UserRepository @Inject constructor(
         cachedUser = user
     }
 
+    fun saveUserToCache(user: User) {
+        cachedUser = user
+    }
+
     suspend fun clearUsers() {
         cachedUser = null
         localDataSource.clearUsers()

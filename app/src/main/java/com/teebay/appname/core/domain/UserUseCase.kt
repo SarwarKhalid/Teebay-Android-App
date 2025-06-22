@@ -60,4 +60,8 @@ class UserUseCase @Inject constructor(private val userRepository: UserRepository
      * Retrieves logged in user from cache
      */
     fun getLoggedInUserCached() = userRepository.getCachedUser()
+
+    fun saveUserToCache(user: User) {
+        userRepository.saveUserToCache(user)
+    }
 }

@@ -20,6 +20,12 @@ class LoginViewModel @Inject constructor(private val userUseCase: UserUseCase) :
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+    init{
+        viewModelScope.launch {
+            userUseCase.logoutUser()
+        }
+    }
+
     fun onEvent(event: LoginEvent) {
         Log.i(TAG,"onEvent")
         when (event) {

@@ -27,15 +27,17 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val user = userUseCase.getLoggedInUserCached()
+            userUseCase.getLoggedInUser().collect { user ->
                 _uiState.update {
                     if (user == null) {
                         it.copy(isLoggedIn = false)
                     } else {
+                        userUseCase.saveUserToCache(user)
                         updateProducts(user.id)
                         it.copy(user = user, isLoggedIn = true)
                     }
                 }
+            }
         }
     }
 
