@@ -30,5 +30,4 @@ fun ProductTitleScreen(title: String, onTitleChange: (String) -> Unit, onNext: (
             }
         }
     }
-
 }

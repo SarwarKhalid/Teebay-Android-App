@@ -1,24 +1,19 @@
 package com.teebay.appname.presentation.screens.AddProduct.nestedscreens
 
 import android.net.Uri
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.teebay.appname.core.model.Result
-import com.teebay.appname.presentation.screens.AddProduct.AddProductUiState
+import com.teebay.appname.presentation.components.NextAndBackButton
 
 @Composable
 fun ProductSummaryScreen(
@@ -48,16 +43,13 @@ fun ProductSummaryScreen(
             AsyncImage(model = it, contentDescription = "Product Image", modifier = Modifier.size(200.dp))
         }
         Spacer(Modifier.height(16.dp))
-        Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween) {
-            OutlinedButton(
-                onClick = onBack
-            ) {
-                Text("Back")
-            }
-            Button(onClick = onSubmit) {
-                Text("Submit")
-            }
-        }
+        NextAndBackButton(
+            onNext = onSubmit,
+            onNextText = "Submit",
+            onBack = onBack,
+            onBackText = "Back",
+            onNextEnabled = true
+        )
     }
 
     when(addProductStatus) {
