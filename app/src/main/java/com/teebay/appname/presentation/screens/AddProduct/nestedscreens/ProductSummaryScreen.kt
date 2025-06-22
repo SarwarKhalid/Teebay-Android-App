@@ -17,9 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.teebay.appname.core.model.Result
+import com.teebay.appname.presentation.screens.AddProduct.AddProductUiState
 
 @Composable
 fun ProductSummaryScreen(
+    addProductStatus: Result<Any>?,
     title: String,
     categories: List<String>,
     description: String,
@@ -28,7 +31,8 @@ fun ProductSummaryScreen(
     rentPrice: String,
     rentOption: String,
     onSubmit: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Review and Submit", style = MaterialTheme.typography.titleLarge)
@@ -54,5 +58,11 @@ fun ProductSummaryScreen(
                 Text("Submit")
             }
         }
+    }
+
+    when(addProductStatus) {
+        is Result.Success -> onNavigateToHome()
+        is Result.Failure -> onNavigateToHome()
+        null -> {}
     }
 }

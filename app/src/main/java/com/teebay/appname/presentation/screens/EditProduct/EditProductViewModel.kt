@@ -86,7 +86,7 @@ class EditProductViewModel @Inject constructor(private val productUseCase: Produ
     private fun editProduct() {
         Log.i(TAG, "editProduct")
         viewModelScope.launch {
-            productUseCase.editProduct(_uiState.value.toProduct(productId))
+            _uiState.update { it.copy(editProductStatus =  productUseCase.editProduct(_uiState.value.toProduct(productId))) }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.teebay.appname.presentation.screens.EditProduct
 
 import com.teebay.appname.core.model.Product
+import com.teebay.appname.core.model.Result
 
 data class EditProductUiState(
     val title: String = "",
@@ -9,6 +10,7 @@ data class EditProductUiState(
     val purchasePrice: String = "",
     val rentPrice: String = "",
     val rentOption: String = "",
+    val editProductStatus: Result<Any>? = null
 )
 
 fun EditProductUiState.toProduct(id: Int): Product {

@@ -2,6 +2,7 @@ package com.teebay.appname.presentation.screens.AddProduct
 
 import android.net.Uri
 import com.teebay.appname.core.model.Product
+import com.teebay.appname.core.model.Result
 
 data class AddProductUiState(
     val title: String = "",
@@ -10,7 +11,8 @@ data class AddProductUiState(
     val imageUri: Uri? = null,
     val purchasePrice: String = "",
     val rentPrice: String = "",
-    val rentOption: String = ""
+    val rentOption: String = "",
+    val addProductStatus: Result<Any>? = null
 )
 
 fun AddProductUiState.toProduct(userId: Int): Product {

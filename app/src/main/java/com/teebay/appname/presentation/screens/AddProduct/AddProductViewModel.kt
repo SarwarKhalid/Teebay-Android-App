@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teebay.appname.core.domain.ProductUseCase
 import com.teebay.appname.core.domain.UserUseCase
+import com.teebay.appname.core.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,10 +52,18 @@ class AddProductViewModel @Inject constructor(
         val imageUri = _uiState.value.imageUri
         viewModelScope.launch {
             userUseCase.getLoggedInUser().collect { user ->
-                user?.let {
-                    imageUri?.let {
-                        productUseCase.uploadProduct(context, _uiState.value.toProduct(user.id), imageUri)
+                if (user != null && imageUri != null) {
+                    _uiState.update {
+                        it.copy(
+                            addProductStatus = productUseCase.uploadProduct(
+                                context,
+                                _uiState.value.toProduct(user.id),
+                                imageUri
+                            )
+                        )
                     }
+                } else {
+                    _uiState.update { it.copy(addProductStatus = Result.Failure(message = "user: $user, imageUri: $imageUri")) }
                 }
             }
         }

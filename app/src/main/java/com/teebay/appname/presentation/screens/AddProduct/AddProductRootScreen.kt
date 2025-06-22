@@ -105,6 +105,7 @@ fun AddProductRootScreen(
             )
 
             AddProductStep.SUMMARY -> ProductSummaryScreen(
+                addProductStatus = uiState.addProductStatus,
                 title = uiState.title,
                 categories = uiState.categories,
                 description = uiState.description,
@@ -114,21 +115,10 @@ fun AddProductRootScreen(
                 rentOption = uiState.rentOption,
                 onSubmit = {
                     onEvent(AddProductEvent.Submit)
-                    onNavigateToHome()
                 },
-                onBack = { step = AddProductStep.entries[step.ordinal - 1] }
+                onBack = { step = AddProductStep.entries[step.ordinal - 1] },
+                onNavigateToHome = onNavigateToHome
             )
         }
-
-//        if (step != AddProductStep.TITLE) {
-//            Spacer(Modifier.height(16.dp))
-//            OutlinedButton(
-//                onClick = {
-//                    onBack(step)
-//                }
-//            ) {
-//                Text("Back")
-//            }
-//        }
     }
 }

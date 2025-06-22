@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.teebay.appname.core.model.Result
 import com.teebay.appname.presentation.components.CategorySelector
 import com.teebay.appname.presentation.components.RentOptionSelector
 
@@ -96,13 +97,18 @@ fun EditProductScreen(
         Button(
             onClick = {
                 onEvent(EditProductEvent.Submit)
-                onNavigateToHome()
             },
             enabled = submitButtonEnabled(uiState),
             modifier = Modifier.align(Alignment.End)
         ) {
             Text("Submit")
         }
+    }
+
+    when(uiState.editProductStatus){
+        is Result.Success -> onNavigateToHome()
+        is Result.Failure -> onNavigateToHome()
+        null -> {}
     }
 }
 
