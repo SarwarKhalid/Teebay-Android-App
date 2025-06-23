@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teebay.appname.core.model.Result
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.text.TextStyle
 import com.teebay.appname.core.model.Product
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.teebay.appname.presentation.components.SideNavigationDrawer
 import java.time.ZonedDateTime
@@ -32,13 +34,14 @@ fun DashboardScreen(
         title = "Dashboard",
         navController = navController
     ) { padding ->
-        Column(modifier = Modifier
-            .padding(padding)
+        Column(
+            modifier = Modifier
+                .padding(padding)
         ) {
-
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth().padding(start = 5.dp, end = 5.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp, end = 5.dp)
             ) {
                 DashboardTab.entries.forEach { tab ->
                     Log.i(TAG, tab.name)
@@ -62,9 +65,12 @@ fun DashboardScreen(
 
                 is Result.Success -> {
                     LaunchedEffect(key1 = result) {
-                        Log.i(TAG,"Showing products: ${result.data.toString()}")
+                        Log.i(TAG, "Showing products: ${result.data.toString()}")
                     }
-                    LazyColumn(modifier = Modifier.padding(25.dp),verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    LazyColumn(
+                        modifier = Modifier.padding(25.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(result.data) { product ->
                             ProductItem(product)
                         }
@@ -86,7 +92,12 @@ fun FilterButton(text: String, selected: Boolean, onClick: () -> Unit) {
         colors = if (selected) ButtonDefaults.buttonColors()
         else ButtonDefaults.outlinedButtonColors()
     ) {
-        Text(text)
+        Text(
+            text = text,
+            style = TextStyle(fontSize = 12.sp),
+            maxLines = 1,
+            softWrap = false,
+        )
     }
 }
 
