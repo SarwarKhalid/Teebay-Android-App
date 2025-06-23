@@ -10,4 +10,4 @@
   3. Android Gradle Plugin: 8.10.0
   4. Kotlin: 2.0.21
 
-Recording link: https://drive.google.com/file/d/1bUrXaNCSCWGs15k80LapN0gNmkRcwmb5/view?usp=sharing
+Recording link: https://drive.google.com/file/d/1AzIreL2ASFq5hUr3Y_B22czp6Nfzhng4/view?usp=sharing
