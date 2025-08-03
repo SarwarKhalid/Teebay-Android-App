@@ -4,14 +4,13 @@ import '../controllers/login.controller.dart';
 import '../widgets/login_form.widget.dart';
 
 class LoginPage extends StatelessWidget {
-  
-  const LoginPage({super.key});
+
+ final LoginController controller;
+
+LoginPage({super.key}) : controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
-    // Dependency Injection
-    final controller = Get.put(LoginController());
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),

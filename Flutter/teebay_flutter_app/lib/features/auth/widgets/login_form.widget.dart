@@ -24,8 +24,8 @@ class LoginForm extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Obx(() => ElevatedButton(
-              onPressed: controller.isLoading.value? null: () => controller.login(),
-              child: controller.isLoading.value? const CircularProgressIndicator(): const Text('Login'),
+              onPressed: controller.isLoading.value? null : () => controller.login(),
+              child: controller.isLoading.value? const CircularProgressIndicator() : const Text('Login'),
             )),
       ],
     );

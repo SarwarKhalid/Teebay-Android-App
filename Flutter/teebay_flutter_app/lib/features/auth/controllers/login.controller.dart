@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../forms/login.schema.dart';
 
 class LoginController extends GetxController {
