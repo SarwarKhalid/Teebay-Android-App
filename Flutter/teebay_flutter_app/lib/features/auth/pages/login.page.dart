@@ -4,18 +4,14 @@ import '../controllers/login.controller.dart';
 import '../widgets/login_form.widget.dart';
 
 class LoginPage extends StatelessWidget {
+  final LoginController controller = Get.put(LoginController(Get.find()));
 
- final LoginController controller;
-
-LoginPage({super.key}) : controller = Get.put(LoginController());
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Login'), centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

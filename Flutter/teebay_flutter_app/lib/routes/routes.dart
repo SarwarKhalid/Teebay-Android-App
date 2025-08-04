@@ -9,9 +9,6 @@ class Routes {
 
 class AppPages {
   static final pages = <GetPage>[
-    GetPage(
-      name: Routes.login,
-      page: () => LoginPage(),
-    ),
+    GetPage(name: Routes.login, page: () => LoginPage()),
   ];
 }
