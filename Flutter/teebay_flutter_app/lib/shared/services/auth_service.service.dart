@@ -4,6 +4,8 @@ import '../../../data/dtos/user.dtos.dart';
 
 class AuthService extends GetxService {
   final UserRepository userRepository;
+  UserDto? get currentUser => userRepository.currentUser;
+  bool get isLoggedIn => userRepository.isLoggedIn;
 
   AuthService._init(this.userRepository);
 

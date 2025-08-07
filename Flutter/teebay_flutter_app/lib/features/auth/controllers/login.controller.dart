@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teebay_flutter_app/data/dtos/user.dtos.dart';
-import 'package:teebay_flutter_app/shared/services/auth_service.dart';
+import 'package:teebay_flutter_app/shared/services/auth_service.service.dart';
 import '../../../data/repositories/base_repository.dart'
     show ServerResponseException;
-import '../../../data/repositories/user.repository.dart';
+import '../../../routes/routes.dart';
 import '../forms/login.schema.dart';
 
 class LoginController extends GetxController {
@@ -54,8 +54,7 @@ class LoginController extends GetxController {
           'Login Successful',
           'Welcome back ${result.user.firstName}',
         );
-        // Navigate to MyProducts
-        // Get.offAllNamed(Routes.home);
+        Get.offAllNamed(Routes.myProducts);
       } catch (e) {
         Get.log('Login Exception: ${e.toString()}');
         if (e is ServerResponseException) {
